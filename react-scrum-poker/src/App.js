@@ -47,7 +47,7 @@ class App extends Component {
 
 		this.getRepos(this.state.username).then(data => {
 
-			console.log(`repos data from componentDidMount: `, data);
+			// console.log(`repos data from componentDidMount: `, data);
 			this.setState({repos: data});
 			// console.log(`this.state.repos: `, this.state.repos);
 

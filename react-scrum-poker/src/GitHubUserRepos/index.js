@@ -16,10 +16,9 @@ class GitHubUserRepos extends Component {
   }
 
   handleChange = (e, { value }) => {
-    this.setState({
-      repoName: value
-    })
-    console.log(`handleChange this.state: `, this.state);
+    e.preventDefault();
+    this.setState({ value });
+    console.log(`handleChange this.state.repoName: `, this.state.repoName);
   }
 
   getIssues = async (e) => {
@@ -40,6 +39,7 @@ class GitHubUserRepos extends Component {
     //   return err;
     // }
   }
+
   render(){
 
     let isArr = Array.isArray(this.props.allRepos);
@@ -49,15 +49,15 @@ class GitHubUserRepos extends Component {
     console.log(`allRepos: `, allRepos);
 
     const gitHubUserReposList = allRepos.map((repo, i) => {
-      return {name: repo.name, text: repo.name, key: repo.id, value: repo.name}
+      return (
+        <Dropdown.Item text={repo.name} key={repo.id} value={repo.name} />
+     )
     })
-    
-    const { value } = this.state;
 
     return (
       <div>
         <h2>GitHub User Repos List</h2>
-        <Dropdown onChange={this.handleChange} placeholder='Select Repo' fluid selection options={gitHubUserReposList} value={value} />
+        <Dropdown onChange={this.handleChange} placeholder='Select Repo' fluid selection options={gitHubUserReposList}/>
         <GitHubUserRepoIssues repoIssues={this.state.issues}/>
       </div>
     )
