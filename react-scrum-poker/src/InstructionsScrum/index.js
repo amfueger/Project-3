@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
-import { Header } from 'semantic-ui-react';
+import { Header, Button, Icon, Modal } from 'semantic-ui-react';
 
 
 class InstructionsScrum extends Component {
   render(){
     return(
       <div>
-      	<Header as="h2">Scrum Instructions</Header>
-      	<p>
-      	Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa strong. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, pede link mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-    		</p>
+      	 <Modal trigger={<Button> Scrum Instructions</Button>}
+        >
+          <Modal.Header>Scrum Instructions</Modal.Header>
+          <Modal.Description>
+          <Header> How to Play</Header>
+          <h4>Welcome to Planning Poker!</h4>
+          <p>As the Scrum Master, it's your job to facilitate game-play for your coworkers in order to receive a consensus on how long a feature, user story, or bug fix is going to take. Go to your profile to create a new game, inviting members of your company in order to let gameplay begin.</p>
+          <h4>Game Play</h4>
+          <p>
+            Once the game has started, you can sit back and discuss with your team. While you can choose to end the game at any time, you do not particpate in voting. 
+          </p>
+          <h4>Resolution</h4>
+          <p>
+            Once the game is over, you can set a calendar invite using the date and time-frame giving at the end. Thanks for playing!
+          </p>
+          </Modal.Description>
+        </Modal>
     	</div>
     )
   }

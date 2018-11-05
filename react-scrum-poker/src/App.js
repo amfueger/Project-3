@@ -5,7 +5,7 @@ import './App.css';
 import GitHubUserRepos from './GitHubUserRepos';
 import Login from './Login';
 // import Register from './Register';
-
+import InstructionsContainer from './InstructionsContainer';
 
 class App extends Component {
 	constructor(){
@@ -62,6 +62,7 @@ class App extends Component {
       <div className="App">
 	      <h1>App.js is rendering</h1>
         {this.state.logged ? <GitHubUserRepos allRepos={this.state.repos}/> : <Login handleLogin={this.handleLogin} />}
+        <InstructionsContainer />
       </div>
     );
   }

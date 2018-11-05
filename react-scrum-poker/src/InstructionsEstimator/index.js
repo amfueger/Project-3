@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
-import { Header } from 'semantic-ui-react';
+import { Header, Modal, Button } from 'semantic-ui-react';
 
 
 class InstructionsEstimator extends Component {
   render(){
     return(
       <div>
-      	<Header as="h2">Estimator Instructions</Header>
-      	<p>
-      	Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa strong. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, pede link mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-    		</p>
+        <Modal trigger={<Button> Estimator Instructions</Button>}
+        >
+          <Modal.Header>Estimator Instructions</Modal.Header>
+          <Modal.Description>
+          <Header> How to Play</Header>
+          <h4>Welcome to Planning Poker!</h4>
+          <p>As an estimator, your job is to decide how many days you think the proposed feature, user story, or bug fix is going to take. The scrum master will create the game, inviting you and your coworkers to play. Log in and check your profile to see if you have any game requests!</p>
+          <h4>Game Play</h4>
+          <p>
+            Once you have joined your company's game, let the debate begin. Make comments regarding your thoughts on timing for the issue, and when you're ready, click your vote button to be taken to the voting page. There you will have the option of selecting an approximate number of days you think completion of the feature will take.</p>
+            <h4>Resolution</h4>
+           <p>
+            If you and your co-workers do NOT have a consensus on how long you think the feature will take, you will be taken back to the game to comment and vote once more. Otherwise, if you all agree on a time-frame, you've completed Planning Poker!
+          </p>
+          </Modal.Description>
+        </Modal>
     	</div>
     )
   }
