@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Header, Menu } from 'semantic-ui-react';
+import { Switch, Route, Link } from 'react-router-dom';
 
 class NavHeaderLogged extends Component {
 	state = {}
@@ -20,9 +21,9 @@ class NavHeaderLogged extends Component {
 				</Menu.Item>
 
 				<Menu.Item
+					as={ Link }
 					name='profile'
-          active={activeItem === 'profile'}
-          onClick={this.handleItemClick}
+					to='profile'
 				>
 					My Profile
 				</Menu.Item>
