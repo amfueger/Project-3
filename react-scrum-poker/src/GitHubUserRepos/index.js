@@ -4,7 +4,6 @@ import GitHubUserRepoIssues from '../GitHubUserRepoIssues';
 
 class GitHubUserRepos extends Component {
 
-
   constructor(){
     super();
 
@@ -15,19 +14,28 @@ class GitHubUserRepos extends Component {
     }
   }
 
-  handleChange = (e, { value }) => {
+  handleClick = (e, data) => {
     e.preventDefault();
-    this.setState({ value });
-    console.log(`handleChange this.state.repoName: `, this.state.repoName);
+    this.setState({             // Set repoName to selected repo's name
+      repoSelected: true,
+      repoName: data.value
+    });
   }
 
-  getIssues = async (e) => {
+  handleChange = (e) => {
+    e.preventDefault();
 
-    this.setState({
-      repoName: e.currentTarget.value
-    })
 
-    console.log(`getIssues this.state: `, this.state);
+
+  }
+
+  // getIssues = async (e) => {
+
+    // this.setState({
+    //   repoName: e.currentTarget.value
+    // })
+
+    // console.log(`getIssues this.state: `, this.state);
 
     // try {
     //   const repos     = await fetch('https://api.github.com/users/' + this.state.username + '/repos');
@@ -38,26 +46,28 @@ class GitHubUserRepos extends Component {
     //   console.log(`Error in getIssues() => catch(err){}\n`, err);
     //   return err;
     // }
-  }
+  // }
 
   render(){
 
-    let isArr = Array.isArray(this.props.allRepos);
-    console.log(`this.props.allRepos isArr: `, isArr);
+    // let isArr = Array.isArray(this.props.allRepos);
+    // console.log(`this.props.allRepos isArr: `, isArr);
 
     let allRepos = Array.from(this.props.allRepos);
     console.log(`allRepos: `, allRepos);
 
     const gitHubUserReposList = allRepos.map((repo, i) => {
       return (
-        <Dropdown.Item text={repo.name} key={repo.id} value={repo.name} />
+        <Dropdown.Item text={repo.name} key={repo.id} value={repo.name} onClick={this.handleClick}/>
      )
     })
+
+    console.log(this.state);
 
     return (
       <div>
         <h2>GitHub User Repos List</h2>
-        <Dropdown onChange={this.handleChange} placeholder='Select Repo' fluid selection options={gitHubUserReposList}/>
+        <Dropdown placeholder='Select Repo' fluid selection options={gitHubUserReposList} onChange={this.handleChange} text={this.state.repoName}/>
         <GitHubUserRepoIssues repoIssues={this.state.issues}/>
       </div>
     )
