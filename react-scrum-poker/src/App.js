@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 // import NavHeaderNotLogged from './NavHeaderNotLogged';
 // import NavHeaderLogged from './NavHeaderLogged';
-import GitHubUserRepos from './GitHubUserRepos';
+import Repos from './Repos';
 import Login from './Login';
 // import Register from './Register';
 
@@ -61,7 +61,7 @@ class App extends Component {
     return (
       <div className="App">
 	      <h1>App.js is rendering</h1>
-        {this.state.logged ? <GitHubUserRepos allRepos={this.state.repos}/> : <Login handleLogin={this.handleLogin} />}
+        {this.state.logged ? <Repos username={this.state.username} allRepos={this.state.repos}/> : <Login handleLogin={this.handleLogin} />}
       </div>
     );
   }
