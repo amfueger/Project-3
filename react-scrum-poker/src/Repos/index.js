@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'semantic-ui-react';
-import GitHubUserRepoIssues from '../GitHubUserRepoIssues';
+import RepoIssues from '../RepoIssues';
 
-class GitHubUserRepos extends Component {
+class Repos extends Component {
 
   constructor(){
     super();
@@ -21,32 +21,6 @@ class GitHubUserRepos extends Component {
       repoName: data.value
     });
   }
-
-  handleChange = (e) => {
-    e.preventDefault();
-
-
-
-  }
-
-  // getIssues = async (e) => {
-
-    // this.setState({
-    //   repoName: e.currentTarget.value
-    // })
-
-    // console.log(`getIssues this.state: `, this.state);
-
-    // try {
-    //   const repos     = await fetch('https://api.github.com/users/' + this.state.username + '/repos');
-    //   const reposJson = await repos.json();
-    //   return reposJson;
-
-    // } catch(err){
-    //   console.log(`Error in getIssues() => catch(err){}\n`, err);
-    //   return err;
-    // }
-  // }
 
   render(){
 
@@ -67,10 +41,10 @@ class GitHubUserRepos extends Component {
     return (
       <div>
         <h2>GitHub User Repos List</h2>
-        <Dropdown placeholder='Select Repo' fluid selection options={gitHubUserReposList} onChange={this.handleChange} text={this.state.repoName}/>
-        <GitHubUserRepoIssues repoIssues={this.state.issues}/>
+        <Dropdown placeholder='Select Repo' fluid selection options={gitHubUserReposList} text={this.state.repoName}/>
+        {this.state.repoSelected ? <RepoIssues repoName={this.state.repoName} username={this.props.username}/> : <p>Select a Repo above to view issues</p>}
       </div>
     )
   }
 }
-export default GitHubUserRepos;
+export default Repos;
