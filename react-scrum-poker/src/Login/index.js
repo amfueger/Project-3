@@ -8,10 +8,10 @@ class Login extends Component {
 		super();
 
 		this.state = {
-			username: 'charlotteprevost',
-			email: 'email',
-			password: 'password',
-			company: 'GA'
+			username: '',
+			email: '',
+			password: '',
+			company: ''
 		}
 	}
 
@@ -39,7 +39,7 @@ class Login extends Component {
 
 		if(parsedResponse.data === 'login successful'){
 			//Validation?
-			this.props.handleLogin(this.state.username, true);
+			this.props.handleLogin(this.state.username, this.state.company, true);
 			// this.props.history.push('/profile');
 		}
 	}

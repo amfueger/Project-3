@@ -18,17 +18,20 @@ class App extends Component {
     this.state = {
     	logged: false,
     	username: '',
+      company: '',
     	repos: [],
 	    }
 	}
 
-	handleLogin = (username, isLogged) => {
+	handleLogin = (username, company, isLogged) => {
+      console.log(`company: `, company);
       console.log(`username: `, username);
       console.log(`isLoggedIn: `, isLogged);
  
       this.setState({
       	logged: isLogged,
-      	username: username
+      	username: username,
+        company: company
       });
 	}
         // <InstructionsContainer />
@@ -38,11 +41,12 @@ class App extends Component {
       <div className="App">
         {this.state.logged ? <NavHeaderLogged /> : <NavHeaderNotLogged />}
         {this.state.logged ? <p>You are logged in</p> : <Login handleLogin={this.handleLogin} />}
-      	<Switch>
+      
+        <Switch>
 	        <Route exact path="/" component={ InstructionsContainer }/>
 	        <Route exact path="/auth/login" component={ Login }/>
 	    		<Route exact path="/profile" component={ ProfileContainer }/>
-      		<Route exact path="/games" component={ GameContainer }/>
+      		<Route exact path="/games" component={()=> <GameContainer loggedUser={this.state}/> } />
       	</Switch>
       </div>
     );

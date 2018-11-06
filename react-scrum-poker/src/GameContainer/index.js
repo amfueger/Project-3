@@ -17,33 +17,51 @@ class GameContainer extends Component {
 		    	title: '',
 		    	description: '',
 		    	_id: '',
-		    	estimatorInvites: []
+		    	estimators: []
 		    }
 	    }
 	}
 
-	updateGame = async (userStory, e) => {
+	updateUserStory = async (userStory, e) => {
 		e.preventDefault();
 
 		try {
-
-			await console.log(`userStory: `, userStory);
-
+			// await console.log(`userStory: `, userStory);
 	    await this.setState({
 	    	game: {
 	    		title: userStory.title,
 	    		description: userStory.description
 	    	}
 	    });
-	    await console.log(`this.state in updateGame() GameContainer: `, this.state);
+	    await console.log(`this.state in updateUserStory() GameContainer: `, this.state);
 
 		} catch(err){
-			console.error(`Error in updateGame() GameContainer`, err);
+			console.error(`Error in updateUserStory() GameContainer`, err);
 		}
 
+	}
 
+
+	updateEstimators = async (estimators, e) => {
+		e.preventDefault();
+
+		try {
+			await console.log(`estimators from updateEstimators() in GameContainer: `, estimators);
+
+	    await this.setState({
+	    	game: {
+	    		estimators: estimators,
+	    	}
+	    });
+
+	    await console.log(`this.state in updateEstimators() GameContainer: `, this.state);
+
+		} catch(err){
+			console.error(`Error in updateEstimators() GameContainer`, err);
+		}
 
 	}
+
 
 	handleSubmit = () => {
 		console.log(this.state);
@@ -78,11 +96,17 @@ class GameContainer extends Component {
     render(){
       return(
       	<div>--------------- GameContainer ---------------
-      		<GameCreateUserStory updateGame={this.updateGame}/>
+      		<GameCreateUserStory updateUserStory={this.updateUserStory}/>
+      		<GameCreateEstimInvites updateEstimators={this.updateEstimators} loggedUser={this.props.loggedUser}/>
+
+
+
+
+
       		{this.state.pageShowing === "GameCreateUserStory" ? 
       			<div>
 	      			<Header as="h2">User Story</Header>
-	      			<GameCreateUserStory updateGame={this.updateGame}/>
+	      			<GameCreateUserStory updateUserStory={this.updateUserStory}/>
       			</div> 
       			: null}     	
       		{this.state.pageShowing === "Repos" ? 
