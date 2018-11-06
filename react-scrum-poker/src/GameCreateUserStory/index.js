@@ -22,6 +22,7 @@ class GameCreateUserStory extends Component {
     return(
       <div>
         <h1>Create Game</h1>
+        <h2>User Story</h2>
         <Segment>
         	<h3>User Story</h3>
           <Form onSubmit={this.props.updateUserStory.bind(null, this.state)}>
@@ -32,7 +33,7 @@ class GameCreateUserStory extends Component {
             <Label>Description:</Label>
             <Form.Input type='text' name='description' value={this.state.description} onChange={this.updateUserStoryState}/>
 
-            <Button color="blue" type='Submit'>Submit User Story</Button>
+            <Button onClick={() => this.props.updateGamePageShowing("GameCreateEstimInvites")} color="blue" type='Submit'>Submit User Story</Button>
           </Form>
         </Segment>
       </div>            

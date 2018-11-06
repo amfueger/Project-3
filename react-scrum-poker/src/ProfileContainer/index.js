@@ -14,7 +14,7 @@ class ProfileContainer extends Component {
 
 			  <Grid.Row verticalAlign='middle'>
 			    <Grid.Column>
-			      <Button primary as={ Link } name='new' to='/new'>
+			      <Button onClick={() => this.props.updatePageShowing("GameContainer")}>
 				      New Game
 				    </Button>
 			    </Grid.Column>

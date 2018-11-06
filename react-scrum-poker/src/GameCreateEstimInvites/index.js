@@ -39,7 +39,7 @@ class GameCreateEstimInvites extends Component {
     	let estimatorsArray = []																	// Make array that will hold estimators from same company - logged user
 
     	parsedResponse.data.forEach(elem => {
-		    if (this.props.loggedUser.company === elem.company && this.props.loggedUser.username !== elem.username){
+		    if (this.props.appState.company === elem.company && this.props.appState.username !== elem.username){
 		    	estimatorsArray.push(elem);
 		    }
     	})
@@ -59,10 +59,10 @@ class GameCreateEstimInvites extends Component {
   		return (
   			<div key={estimator._id}>
 	        <Label htmlFor="name=username">Estimator Username:</Label>
-	        <Form.Input type='text' name='username' value={estimator.username} onChange={this.updateMovie}/>
+	        <Form.Input type='text' name='username' value={estimator.username} onChange={this.updateEstimators}/>
 
 	        <Label>Estimator Email:</Label>
-	        <Form.Input type='text' name='email' value={estimator.email} onChange={this.updateMovie}/>
+	        <Form.Input type='text' name='email' value={estimator.email} onChange={this.updateEstimators}/>
 
 	        <Button color="blue" type='Submit'>Delete Estimator</Button>
         </div>
@@ -72,9 +72,11 @@ class GameCreateEstimInvites extends Component {
     return(
 	    <div>
 	      <Segment>
-	      	<h3>Estimator Invites</h3>
+          <h1>Create Game</h1>
+	      	<h2>Estimator Invites</h2>
 	        <Form onSubmit={this.props.updateEstimators.bind(null, this.state)}>
 	        	{estimatorsMapped}
+	        	<Button onClick={() => this.props.updateGamePageShowing("GameCreateFinal")} color="green" type='Submit'>Set Estimator Invites</Button>
 	        </Form>
 	      </Segment>
 	    </div>             

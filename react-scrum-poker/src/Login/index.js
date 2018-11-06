@@ -37,9 +37,15 @@ class Login extends Component {
 
 		console.log(`<Login> handleSubmit() parsedResponse`, parsedResponse);
 
-		if(parsedResponse.data === 'login successful'){
+		if(parsedResponse.data === 'login successful'){									// If login success
 			//Validation?
-			this.props.handleLogin(this.state.username, this.state.company, true);
+			this.props.handleLogin(this.state.username, this.state.company, true);		// Pass data up to App.js
+			console.log(`Before this.props.updatePageShowing`);
+
+
+			
+			this.props.updatePageShowing("ProfileContainer");						// Change page showing to the user's profile
+			console.log(`After this.props.updatePageShowing`);
 			// this.props.history.push('/profile');
 		}
 	}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { Route, Switch } from 'react-router-dom';
 import Repos from '../Repos';
+import GameCreateFinal from '../GameCreateFinal';
 import GameCreateUserStory from '../GameCreateUserStory';
 import GameCreateEstimInvites from '../GameCreateEstimInvites';
 import { Header } from 'semantic-ui-react';
@@ -9,18 +10,28 @@ import { Header } from 'semantic-ui-react';
 class GameContainer extends Component {
 
 	constructor(){
-	    super();
-	    this.state = {
-	    	pageShowing: '',
-	    	games: [],
-	    	game : {
-		    	title: '',
-		    	description: '',
-		    	_id: '',
-		    	estimators: []
-		    }
+    super();
+
+    this.state = {
+    	gamePage: 'GameCreateUserStory',
+    	games: [],
+    	game : {
+	    	title: '',
+	    	description: '',
+	    	_id: '',
+	    	estimators: []
 	    }
+    }
+    this.updateGamePageShowing = this.updateGamePageShowing.bind(this);
 	}
+
+  updateGamePageShowing = async (gamePage) => {
+    // e.preventDefault();
+      console.log(`gamePage: `, gamePage);
+
+      await this.setState({gamePage: gamePage});
+  }
+
 
 	updateUserStory = async (userStory, e) => {
 		e.preventDefault();
@@ -33,24 +44,26 @@ class GameContainer extends Component {
 	    		description: userStory.description
 	    	}
 	    });
+
 	    await console.log(`this.state in updateUserStory() GameContainer: `, this.state);
 
 		} catch(err){
 			console.error(`Error in updateUserStory() GameContainer`, err);
 		}
-
 	}
 
 
-	updateEstimators = async (estimators, e) => {
+	updateEstimators = async (data, e) => {
 		e.preventDefault();
 
 		try {
-			await console.log(`estimators from updateEstimators() in GameContainer: `, estimators);
 
+			console.log(`'data' in updateEstimators() in GameContainer: `, data);
 	    await this.setState({
 	    	game: {
-	    		estimators: estimators,
+	    		title: this.state.game.title,
+	    		description: this.state.game.description,
+	    		estimators: data.estimators
 	    	}
 	    });
 
@@ -95,38 +108,37 @@ class GameContainer extends Component {
 
     render(){
       return(
-      	<div>--------------- GameContainer ---------------
-      		<GameCreateUserStory updateUserStory={this.updateUserStory}/>
-      		<GameCreateEstimInvites updateEstimators={this.updateEstimators} loggedUser={this.props.loggedUser}/>
+      	<Header as="h1">--------------- GameContainer ---------------
 
-
-
-
-
-      		{this.state.pageShowing === "GameCreateUserStory" ? 
-      			<div>
-	      			<Header as="h2">User Story</Header>
-	      			<GameCreateUserStory updateUserStory={this.updateUserStory}/>
-      			</div> 
-      			: null}     	
-      		{this.state.pageShowing === "Repos" ? 
-      			<div>
-	      			<Header as="h2">Repos</Header>
-	      			<Repos />
-      			</div> 
-      			: null}     	
-      		{this.state.pageShowing === "GameCreateEstimInvites" ? 
-      			<div>
-	      			<Header as="h2">Estimator Invites</Header>
-	      			<GameCreateEstimInvites addGame={this.addGame} />
-      			</div> 
-      			: null}     	
-	      </div>
+        {this.state.gamePage === "GameCreateUserStory" ? 
+          <div>
+            <GameCreateUserStory updateGamePageShowing={this.updateGamePageShowing} updateUserStory={this.updateUserStory}/>
+          </div> 
+          : null}       
+        {this.state.gamePage === "Repos" ? 
+          <div>
+            <Header as="h2">Repos</Header>
+            <Repos updateGamePageShowing={this.updateGamePageShowing} />
+          </div> 
+          : null}       
+        {this.state.gamePage === "GameCreateEstimInvites" ? 
+          <div>
+            <Header as="h2">Estimator Invites</Header>
+            <GameCreateEstimInvites updateGamePageShowing={this.updateGamePageShowing} updateEstimators={this.updateEstimators} appState={this.props.appState}/>
+          </div> 
+          : null}  
+        {this.state.gamePage === "GameCreateFinal" ? 
+          <div>
+            <Header as="h2">Overview</Header>
+            <GameCreateFinal updateGamePageShowing={this.updateGamePageShowing} addGame={this.addGame} gameToCreate={this.state.game}/>
+          </div> 
+          : null}  
+      	</Header>
       )
     }
 }
 export default GameContainer;
 		        // <Route exact path="/new" component={ GameCreate }/>
 		        // <Route exact path="/current" component={ GameCurrent }/>
-		    		// <Route exact path="/pending" component={ ProfileContainer }/>
+	    		// <Route exact path="/pending" component={ ProfileContainer }/>
 		      	// <Route exact path="/past" component={ GameContainer }/>
