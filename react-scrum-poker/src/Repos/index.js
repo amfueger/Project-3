@@ -8,6 +8,7 @@ class Repos extends Component {
     super();
 
     this.state = {
+      repos: [],
       repoSelected: false,
       repoName: '',
       issues: []
@@ -22,6 +23,30 @@ class Repos extends Component {
     });
   }
 
+  getRepos = async () => {
+    try {
+      const repos   = await fetch('https://api.github.com/users/' + this.state.username + '/repos');
+      const reposJson = await repos.json();
+      return reposJson;
+
+    } catch(err){
+      console.log(`Error in getRepos() => catch(err){}\n`, err);
+      return err;
+    }
+  }
+
+  componentDidMount(){
+
+    this.getRepos(this.state.username).then(data => {
+
+      // console.log(`repos data from componentDidMount: `, data);
+      this.setState({repos: data});
+      // console.log(`this.state.repos: `, this.state.repos);
+
+    }).catch(err => {
+      console.log(`Error in componentDidMount .catch(err){}\n`, err);     
+    })
+  }
   render(){
 
     // let isArr = Array.isArray(this.props.allRepos);

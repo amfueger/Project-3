@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
-// import NavHeaderNotLogged from './NavHeaderNotLogged';
-// import NavHeaderLogged from './NavHeaderLogged';
-import Repos from './Repos';
+import InstructionsContainer from './InstructionsContainer';
+import NavHeaderNotLogged from './NavHeaderNotLogged';
+import NavHeaderLogged from './NavHeaderLogged';
+import ProfileContainer from './ProfileContainer';
+import GameContainer from './GameContainer';
+// import Repos from './Repos';
 import Login from './Login';
 // import Register from './Register';
-import InstructionsContainer from './InstructionsContainer';
+import { Route, Switch } from 'react-router-dom';
+
 
 class App extends Component {
 	constructor(){
@@ -26,43 +30,20 @@ class App extends Component {
       	logged: isLogged,
       	username: username
       });
-
-      this.componentDidMount();
-
 	}
+        // <InstructionsContainer />
 
-	getRepos = async () => {
-		try {
-	    const repos 	= await fetch('https://api.github.com/users/' + this.state.username + '/repos');
-	    const reposJson = await repos.json();
-	    return reposJson;
-
-		} catch(err){
-			console.log(`Error in getRepos() => catch(err){}\n`, err);
-			return err;
-		}
-	}
-
-	componentDidMount(){
-
-		this.getRepos(this.state.username).then(data => {
-
-			// console.log(`repos data from componentDidMount: `, data);
-			this.setState({repos: data});
-			// console.log(`this.state.repos: `, this.state.repos);
-
-		}).catch(err => {
-      console.log(`Error in componentDidMount .catch(err){}\n`, err);			
-		})
-	}
-
-        // {this.state.logged ? <NavHeaderLogged /> : <NavHeaderNotLogged />}
   render() {
     return (
       <div className="App">
-        {this.state.logged ? <Repos username={this.state.username} allRepos={this.state.repos}/> : <Login handleLogin={this.handleLogin} />}
-        <InstructionsContainer />
-
+        {this.state.logged ? <NavHeaderLogged /> : <NavHeaderNotLogged />}
+        {this.state.logged ? <p>You are logged in</p> : <Login handleLogin={this.handleLogin} />}
+      	<Switch>
+	        <Route exact path="/" component={ InstructionsContainer }/>
+	        <Route exact path="/auth/login" component={ Login }/>
+	    		<Route exact path="/profile" component={ ProfileContainer }/>
+      		<Route exact path="/games" component={ GameContainer }/>
+      	</Switch>
       </div>
     );
   }

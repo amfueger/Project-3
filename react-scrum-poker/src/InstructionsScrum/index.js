@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Button, Icon, Modal } from 'semantic-ui-react';
+import { Header, Button, Modal } from 'semantic-ui-react';
 
 
 class InstructionsScrum extends Component {
