@@ -25,7 +25,7 @@ class App extends Component {
 	handleLogin = (username, isLogged) => {
       console.log(`username: `, username);
       console.log(`isLoggedIn: `, isLogged);
-
+ 
       this.setState({
       	logged: isLogged,
       	username: username

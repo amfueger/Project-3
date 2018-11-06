@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 // import { Route, Switch } from 'react-router-dom';
-import GameCreate from '../GameCreate';
+import Repos from '../Repos';
+import GameCreateUserStory from '../GameCreateUserStory';
+import GameCreateEstimInvites from '../GameCreateEstimInvites';
+import { Header } from 'semantic-ui-react';
 
 
 class GameContainer extends Component {
@@ -8,15 +11,38 @@ class GameContainer extends Component {
 	constructor(){
 	    super();
 	    this.state = {
+	    	pageShowing: '',
 	    	games: [],
-	    	title: '',
-	    	description: '',
-	    	_id: ''
+	    	game : {
+		    	title: '',
+		    	description: '',
+		    	_id: '',
+		    	estimatorInvites: []
+		    }
 	    }
 	}
 
-	updateGame = (e) => {
-	    this.setState({[e.currentTarget.name]: e.currentTarget.value})
+	updateGame = async (userStory, e) => {
+		e.preventDefault();
+
+		try {
+
+			await console.log(`userStory: `, userStory);
+
+	    await this.setState({
+	    	game: {
+	    		title: userStory.title,
+	    		description: userStory.description
+	    	}
+	    });
+	    await console.log(`this.state in updateGame() GameContainer: `, this.state);
+
+		} catch(err){
+			console.error(`Error in updateGame() GameContainer`, err);
+		}
+
+
+
 	}
 
 	handleSubmit = () => {
@@ -25,7 +51,8 @@ class GameContainer extends Component {
 
   addGame = async (game, e) => {
     e.preventDefault();
-    console.log(game);
+    console.log(`this.state in addGame() GameContainer: `, this.state);
+    console.log(`game in addGame() GameContainer: `, game);
 
     try {
       const createdGame = await fetch('http://localhost:9000/games/', {
@@ -39,7 +66,7 @@ class GameContainer extends Component {
       const parsedResponse = await createdGame.json();
       await console.log(`parsedResponse from addGame: `, parsedResponse);
 
-      await this.setState({games: [...this.state.games, parsedResponse.data]})
+      await this.setState({game: [...this.state.game, parsedResponse.data]})
 			await console.log(`State after adding game: `, this.state);      
 
     } catch(err){
@@ -51,7 +78,25 @@ class GameContainer extends Component {
     render(){
       return(
       	<div>--------------- GameContainer ---------------
-      		<GameCreate addGame={this.addGame}/>     	
+      		<GameCreateUserStory updateGame={this.updateGame}/>
+      		{this.state.pageShowing === "GameCreateUserStory" ? 
+      			<div>
+	      			<Header as="h2">User Story</Header>
+	      			<GameCreateUserStory updateGame={this.updateGame}/>
+      			</div> 
+      			: null}     	
+      		{this.state.pageShowing === "Repos" ? 
+      			<div>
+	      			<Header as="h2">Repos</Header>
+	      			<Repos />
+      			</div> 
+      			: null}     	
+      		{this.state.pageShowing === "GameCreateEstimInvites" ? 
+      			<div>
+	      			<Header as="h2">Estimator Invites</Header>
+	      			<GameCreateEstimInvites addGame={this.addGame} />
+      			</div> 
+      			: null}     	
 	      </div>
       )
     }
