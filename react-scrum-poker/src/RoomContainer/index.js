@@ -14,7 +14,8 @@ class RoomContainer extends Component{
 			roomId: null,
 			messages: [],
 			joinableRooms: [],
-			joinedRooms: []
+			joinedRooms: [],
+			userId: null
 		}
 	}
 	componentDidMount(){
@@ -66,7 +67,7 @@ class RoomContainer extends Component{
 				this.getRooms()
 			}).catch(error => console.log(error, 'error subscribing to room'));
 	}
-	createRoom(name) {
+	createRoom = (name) => {
 		this.currentUser.createRoom({
 			name
 		})

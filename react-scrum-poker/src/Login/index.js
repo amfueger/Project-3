@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Label } from 'semantic-ui-react';
+import { Form, Button, Label, Segment, Header } from 'semantic-ui-react';
 // import gitHubStuff from '../gitHubStuff.js';
 
 
@@ -8,10 +8,10 @@ class Login extends Component {
 		super();
 
 		this.state = {
-			username: 'charlotteprevost',
-			email: 'email',
-			password: 'password',
-			company: 'GA'
+			username: '',
+			email: '',
+			password: '',
+			company: ''
 		}
 	}
 
@@ -37,10 +37,16 @@ class Login extends Component {
 
 		console.log(`<Login> handleSubmit() parsedResponse`, parsedResponse);
 
-		if(parsedResponse.data === 'login successful'){
-			// this.props.history.push('/profile');
+		if(parsedResponse.data === 'login successful'){									// If login success
 			//Validation?
-			this.props.handleLogin(this.state.username, true);
+			this.props.handleLogin(this.state.username, this.state.company, true);		// Pass data up to App.js
+			console.log(`Before this.props.updatePageShowing`);
+
+
+			
+			this.props.updatePageShowing("ProfileContainer");						// Change page showing to the user's profile
+			console.log(`After this.props.updatePageShowing`);
+			// this.props.history.push('/profile');
 		}
 	}
 
@@ -72,23 +78,49 @@ class Login extends Component {
 		// console.log(`gitHubStuff: `, gitHubStuff);
 		return(
 			<div>
-				<Form onSubmit={this.handleSubmit}>
-					<Label> Username: </Label>
-					<Form.Input type='text' name='username' onChange={this.handleChange} />
-					<Label> Email: </Label>
-					<Form.Input type='text' name='email' onChange={this.handleChange} />
-					<Label> Password: </Label>
-					<Form.Input type='text' name='password' onChange={this.handleChange} />
-					<Label> Company: </Label>
-					<Form.Input type='text' name='company' onChange={this.handleChange} />
-					<Button type='Submit' color='blue'>Login</Button>
-				</Form>
-				<br/>
-				<br/>
-				<Form onSubmit={this.handleSubmitGitHub}>
-					<Label> Login With GitHub: </Label><br/>
-					<Button type='Submit' color='blue'>Login</Button>
-				</Form>
+				<Segment>
+					<Header as="h1">Login</Header>
+					<Form onSubmit={this.handleSubmit}>
+						<Label> Username: </Label>
+						<small>Also used for your chat handle</small>
+						<Form.Input 
+						type='text' 
+						name='username' 
+						placeholder='username'
+						onChange={this.handleChange}
+						required />
+						<Label> Email: </Label>
+						<Form.Input 
+						type='text' 
+						name='email' 
+						placeholder='email'
+						onChange={this.handleChange} 
+						required />
+						<Label> Password: </Label>
+						<Form.Input 
+						type='text' 
+						name='password'
+						placeholder='password' 
+						onChange={this.handleChange} 
+						required />
+						<Label> Company: </Label>
+						<Form.Input 
+						type='text' 
+						name='company' 
+						placeholder='company'
+						onChange={this.handleChange} 
+						required />
+						<Button 
+						type='Submit' 
+						color='blue'>Login</Button>
+					</Form>
+					<br/>
+					<br/>
+					<Form onSubmit={this.handleSubmitGitHub}>
+						<Label> Login With GitHub: </Label><br/>
+						<Button type='Submit' color='blue'>Login</Button>
+					</Form>
+				</Segment>
 			</div>
 		)
 	}

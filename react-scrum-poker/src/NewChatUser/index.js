@@ -35,6 +35,31 @@ class NewChatUser extends Component{
 			)
 		//Need to ensure that this button is actually used for game creation, not just ROOM creation
 	}
-
-	export default NewChatUser
 }
+
+export default NewChatUser;
+
+
+
+//Where the User Form is needed: 
+//<NewChatUser onSubmit={this.onUsernameSubmitted} />
+
+//Here is the method that needs to go in the Game Creation container:
+
+//make sure to set state for currentUsername in constructor
+/* 
+onUsernameSubmitted = (username) { 
+fetch('http://localhost:9000/chatusers', {
+	method: 'POST',
+	headers: {
+	'Content-Type': 'application/json',
+	},
+	body: JSON.stringify({ username })
+})
+	.then(response => {
+		this.setState({
+		currentUsername: username
+	})
+})
+}
+*/
