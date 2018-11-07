@@ -6,6 +6,7 @@ import Repos from './Repos';
 import Login from './Login';
 // import Register from './Register';
 import InstructionsContainer from './InstructionsContainer';
+import ChatContainer from './ChatContainer';
 
 class App extends Component {
 	constructor(){
@@ -62,6 +63,7 @@ class App extends Component {
       <div className="App">
         {this.state.logged ? <Repos username={this.state.username} allRepos={this.state.repos}/> : <Login handleLogin={this.handleLogin} />}
         <InstructionsContainer />
+        <ChatContainer />
 
       </div>
     );
