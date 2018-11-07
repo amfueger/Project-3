@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Label, Segment } from 'semantic-ui-react';
+import { Form, Button, Segment, Header, Grid } from 'semantic-ui-react';
 
 
 class GameCreateUserStory extends Component {
@@ -8,32 +8,62 @@ class GameCreateUserStory extends Component {
 
     this.state = {
       title: '',
-      description: ''
+      description: '',
+      disabled: true
     }
   }
   
+
+  handleClick = () => this.setState({       // Button disable/enable
+    disabled: !this.state.disabled
+  })
+
+
   updateUserStoryState = (e) => {
     this.setState({
       [e.currentTarget.name]: e.currentTarget.value
     })
-  }
+  };
+
 
   render(){
+    const disabled = this.state.disabled;
     return(
       <div>
-        <h1>Create Game</h1>
-        <h2>User Story</h2>
+        <Header as="h1">Create Game</Header>
         <Segment>
-        	<h3>User Story</h3>
+        	<Header as="h2">User Story</Header>
           <Form onSubmit={this.props.updateUserStory.bind(null, this.state)}>
 
-            <Label htmlFor="name=title">Title:</Label>
-            <Form.Input type='text' name='title' value={this.state.title} onChange={this.updateUserStoryState}/>
+            <Form.Input label='Title:' type='text' name='title' value={this.state.title} onChange={this.updateUserStoryState}/>
 
-            <Label>Description:</Label>
-            <Form.Input type='text' name='description' value={this.state.description} onChange={this.updateUserStoryState}/>
+            <Form.Input label='Description:' type='text' name='description' value={this.state.description} onChange={this.updateUserStoryState}/>
 
-            <Button onClick={() => this.props.updateGamePageShowing("GameCreateEstimInvites")} color="blue" type='Submit'>Submit User Story</Button>
+            <Grid columns={2} stackable textAlign='center'>
+
+              <Grid.Row verticalAlign='middle'>
+
+                <Grid.Column style={{width: '100%'}}>
+                  <Header as="h5">Cannot be undone.</Header>
+                  <Button onClick={this.handleClick} 
+                    color="green" 
+                    type='Submit'
+                    >
+                      Submit User Story
+                  </Button>
+                </Grid.Column>
+                
+                <Grid.Column>
+                  <Button onClick={() => this.props.updateGamePageShowing("GameCreateEstimInvites")} 
+                    disabled={disabled} 
+                    color="green" 
+                    floated="right"
+                  >
+                    Estimators ->
+                  </Button>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
           </Form>
         </Segment>
       </div>            

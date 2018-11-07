@@ -9,7 +9,7 @@ class InstructionsScrum extends Component {
       	 <Modal trigger={<Button> Scrum Instructions</Button>}
         >
           <Modal.Header>Scrum Instructions</Modal.Header>
-          <Modal.Description>
+          <Modal.Description style={{padding: '20px'}}>
           <Header> How to Play</Header>
           <h4>Welcome to Planning Poker!</h4>
           <p>As the Scrum Master, it's your job to facilitate game-play for your coworkers in order to receive a consensus on how long a feature, user story, or bug fix is going to take. Go to your profile to create a new game, inviting members of your company in order to let gameplay begin.</p>

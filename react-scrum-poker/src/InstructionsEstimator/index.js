@@ -9,7 +9,7 @@ class InstructionsEstimator extends Component {
         <Modal trigger={<Button> Estimator Instructions</Button>}
         >
           <Modal.Header>Estimator Instructions</Modal.Header>
-          <Modal.Description>
+          <Modal.Description style={{padding: '20px'}}>
           <Header> How to Play</Header>
           <h4>Welcome to Planning Poker!</h4>
           <p>As an estimator, your job is to decide how many days you think the proposed feature, user story, or bug fix is going to take. The scrum master will create the game, inviting you and your coworkers to play. Log in and check your profile to see if you have any game requests!</p>

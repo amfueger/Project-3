@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import NavHeaderNotLogged from './NavHeaderNotLogged';
-import NavHeaderLogged from './NavHeaderLogged';
-
+// -------------------- Import Components -------------------- //
 import InstructionsContainer from './InstructionsContainer';
-
+import NavHeaderNotLogged from './NavHeaderNotLogged';
 import ProfileContainer from './ProfileContainer';
-
+import NavHeaderLogged from './NavHeaderLogged';
 import GameContainer from './GameContainer';
-// import Repos from './Repos';
-
-import Login from './Login';
 // import Register from './Register';
+// import Repos from './Repos';
+import Login from './Login';
 
+// -------------------- Import Modules -------------------- //
 import { Route, Switch } from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
 
 
 class App extends Component {
@@ -82,7 +79,6 @@ class App extends Component {
           : null} 
         {this.state.pageShowing === "ProfileContainer" ? 
           <div>
-            <Header as="h2">Profile</Header>
             <ProfileContainer updatePageShowing={this.updatePageShowing} appState={this.state}/>
           </div> 
           : null} 

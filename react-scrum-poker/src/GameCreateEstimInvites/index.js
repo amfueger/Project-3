@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Label, Segment } from 'semantic-ui-react';
+import { Form, Button, Label, Segment, Divider } from 'semantic-ui-react';
 
 
 class GameCreateEstimInvites extends Component {
@@ -7,51 +7,55 @@ class GameCreateEstimInvites extends Component {
     super();
 
     this.state = {
-    	scrumMaster: {
-
-    	},
+      scrumMaster: null,
     	estimators: [],
       username: '',
-      email: ''
+      email: '',
+      disabled: true
     }
   }
 
-
-  updateEstimators = (e) => {
-    this.setState({
-      [e.currentTarget.name]: e.currentTarget.value
-    })
-  }
+  handleClick = () => this.setState({                                   // Button disable/enable
+    disabled: !this.state.disabled
+  })
 
 
-  getPotentialEstimators = async () => {
-    const estimators = await fetch('http://localhost:9000/users/'); 	// Fetch all users
+  getUsers = async () => {
+    const estimators = await fetch('http://localhost:9000/users/'); 	  // Fetch all users
     const estimatorsParsedJSON = await estimators.json();
     await console.log(`estimatorsParsedJSON: `, estimatorsParsedJSON);
     return estimatorsParsedJSON;
-  }
+  };
 
 
   componentDidMount(){
-    // Get ALL potential estimators, on the intial load of the APP
-    this.getPotentialEstimators().then((parsedResponse) => {
+    
+    this.getUsers().then(parsedResponse => {                            // Get ALL potential estimators, on the intial load of the APP
 
-    	let estimatorsArray = []																	// Make array that will hold estimators from same company - logged user
+    	let estimatorsArray = [];																         	// Make array that will hold estimators from same company minus logged user
+      let scrumMasterGet = null;
 
     	parsedResponse.data.forEach(elem => {
-		    if (this.props.appState.company === elem.company && this.props.appState.username !== elem.username){
-		    	estimatorsArray.push(elem);
-		    }
+		    if (this.props.appState.company === elem.company 
+          && this.props.appState.username !== elem.username){
+		    	estimatorsArray.push(elem);                                   // Grab estimators (same company)
+		    } else if (this.props.appState.username === elem.username){
+          scrumMasterGet = elem;                                        // Grab scrumMaster
+          console.log(`scrumMasterGet: `, scrumMasterGet);
+          console.log(`elem: `, elem);
+        }
     	})
 
-      this.setState({estimators: estimatorsArray})	
+      this.setState({
+        scrumMaster: scrumMasterGet,
+        estimators: estimatorsArray
+      })
+      console.log(`this.state from componentDidMount() GameCreateEstimInvites: `, this.state);	
 
     }).catch((err) => {
       console.log(err);
-    })
-
-    
-  }  
+    })    
+  };
 
   render(){
 
@@ -59,15 +63,17 @@ class GameCreateEstimInvites extends Component {
   		return (
   			<div key={estimator._id}>
 	        <Label htmlFor="name=username">Estimator Username:</Label>
-	        <Form.Input type='text' name='username' value={estimator.username} onChange={this.updateEstimators}/>
+	        <Form.Input type='text' name='username' value={estimator.username}/>
 
 	        <Label>Estimator Email:</Label>
-	        <Form.Input type='text' name='email' value={estimator.email} onChange={this.updateEstimators}/>
+	        <Form.Input type='text' name='email' value={estimator.email}/>
 
 	        <Button color="blue" type='Submit'>Delete Estimator</Button>
         </div>
 			)
   	})
+
+    const disabled = this.state.disabled;
 
     return(
 	    <div>
@@ -76,8 +82,21 @@ class GameCreateEstimInvites extends Component {
 	      	<h2>Estimator Invites</h2>
 	        <Form onSubmit={this.props.updateEstimators.bind(null, this.state)}>
 	        	{estimatorsMapped}
-	        	<Button onClick={() => this.props.updateGamePageShowing("GameCreateFinal")} color="green" type='Submit'>Set Estimator Invites</Button>
-	        </Form>
+            <Divider horizontal></Divider>
+	        	<Button onClick={this.handleClick} 
+              color="green" 
+              type='Submit'
+            >
+              I've Chosen My Estimators
+            </Button>
+            <Button onClick={() => this.props.updateGamePageShowing("GameCreateFinal")} 
+              disabled={disabled} 
+              color="green"
+              floated="right" 
+            >
+              Review and Submit
+            </Button>
+          </Form>
 	      </Segment>
 	    </div>             
     )

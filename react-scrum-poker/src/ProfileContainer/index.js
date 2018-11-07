@@ -7,17 +7,18 @@ class ProfileContainer extends Component {
   render(){
     return(
     	<div>
-    	<Header as="h2">ProfileContainer</Header>
+    	<Header as="h2">My Profile - ProfileContainer</Header>
 			<Segment placeholder>
 			<Grid columns={2} divided stackable textAlign='center'>
-			  <Divider vertical></Divider>
 
 			  <Grid.Row verticalAlign='middle'>
 			    <Grid.Column>
-			      <Button onClick={() => this.props.updatePageShowing("GameContainer")}>
+			      <Button primary color="green" onClick={() => this.props.updatePageShowing("GameContainer")}>
 				      New Game
 				    </Button>
 			    </Grid.Column>
+				  
+				  <Divider vertical></Divider>
 
 			    <Grid.Column>
 			      <Button primary as={ Link } name='current' to='current'>

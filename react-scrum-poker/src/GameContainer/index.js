@@ -18,7 +18,7 @@ class GameContainer extends Component {
     	game : {
 	    	title: '',
 	    	description: '',
-	    	_id: '',
+        scrumMaster: [],
 	    	estimators: []
 	    }
     }
@@ -37,7 +37,7 @@ class GameContainer extends Component {
 		e.preventDefault();
 
 		try {
-			// await console.log(`userStory: `, userStory);
+			await console.log(`userStory: `, userStory);
 	    await this.setState({
 	    	game: {
 	    		title: userStory.title,
@@ -107,6 +107,7 @@ class GameContainer extends Component {
   }
 
     render(){
+    	console.log(`this.state.game from GameContainer on render`, this.state.game);
       return(
       	<Header as="h1">--------------- GameContainer ---------------
 
