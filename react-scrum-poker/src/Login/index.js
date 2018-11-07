@@ -81,7 +81,7 @@ class Login extends Component {
 				<Segment>
 					<Header as="h1">Login</Header>
 					<Form onSubmit={this.handleSubmit}>
-						<Label> Username: </Label>
+						<Label> Username: </Label><br />
 						<small>Also used for your chat handle</small>
 						<Form.Input 
 						type='text' 
