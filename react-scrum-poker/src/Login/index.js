@@ -6,7 +6,6 @@ import { Form, Button, Label, Segment, Header } from 'semantic-ui-react';
 class Login extends Component {
 	constructor(){
 		super();
-
 		this.state = {
 			username: '',
 			email: '',
@@ -22,6 +21,7 @@ class Login extends Component {
 	}
 
 	handleSubmit = async (e) => {
+		//console.log(e, 'e, before prevent default');
 		e.preventDefault();
 		console.log(`After preventDefault`);
 		
@@ -81,6 +81,7 @@ class Login extends Component {
 				<Segment>
 					<Header as="h1">Login</Header>
 					<Form onSubmit={this.handleSubmit}>
+						<Label> Username: </Label><br />
 						<small>Also used for your chat handle</small>
 						<Form.Input 
 						type='text' 
@@ -88,18 +89,21 @@ class Login extends Component {
 						placeholder='username'
 						onChange={this.handleChange}
 						required />
+						<Label> Email: </Label>
 						<Form.Input 
 						type='text' 
 						name='email' 
 						placeholder='email'
 						onChange={this.handleChange} 
 						required />
+						<Label> Password: </Label>
 						<Form.Input 
-						type='text' 
+						type='password' 
 						name='password'
 						placeholder='password' 
 						onChange={this.handleChange} 
 						required />
+						<Label> Company: </Label>
 						<Form.Input 
 						type='text' 
 						name='company' 

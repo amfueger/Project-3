@@ -28,22 +28,24 @@ class RoomContainer extends Component{
 		})
 		chatManager.connect()
 		.then(currentUser => {
-			this.currentUser = currentUser
+			this.currentUser = currentUser;
 			this.getRooms();
 			this.subscribeToRoom(19409519);
 		})
 		.catch(err => console.log('err on connecting', err));
 		
 	}
+
 	getRooms = () => {
-			this.currentUser.getJoinableRooms()
-			.then(joinableRooms => {
-				this.setState({
-					joinableRooms,
-					joinedRooms: this.currentUser.rooms
-				})
-			}).catch(err => console.log(err, 'error on joinable rooms'));
+		this.currentUser.getJoinableRooms()
+		.then(joinableRooms => {
+			this.setState({
+				joinableRooms,
+				joinedRooms: this.currentUser.rooms
+			})
+		}).catch(err => console.log(err, 'error on joinable rooms'));
 	}
+
 	subscribeToRoom = (roomId) => {
 		this.setState({
 			messages: []

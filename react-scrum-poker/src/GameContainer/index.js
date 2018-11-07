@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 // import { Route, Switch } from 'react-router-dom';
 import Repos from '../Repos';
-import GameCreateFinal from '../GameCreateFinal';
-import GameCreateUserStory from '../GameCreateUserStory';
-import GameCreateEstimInvites from '../GameCreateEstimInvites';
+import GameCreateFinal from './GameCreateFinal';
+import GameCreateUserStory from './GameCreateUserStory';
+import GameCreateEstimInvites from './GameCreateEstimInvites';
 import { Header } from 'semantic-ui-react';
 
 

@@ -15,7 +15,7 @@ class RoomList extends Component{
 							onClick={() => this.props.subscribeToRoom(room.id) } 
 							href="#"># {room.name}</a>
 						</li>
-						)
+					)
 				})}
 			</ul>
 		</div>
