@@ -81,15 +81,34 @@ class Login extends Component {
 				<Segment>
 					<Header as="h1">Login</Header>
 					<Form onSubmit={this.handleSubmit}>
-						<Label> Username: </Label>
-						<Form.Input type='text' name='username' onChange={this.handleChange} />
-						<Label> Email: </Label>
-						<Form.Input type='text' name='email' onChange={this.handleChange} />
-						<Label> Password: </Label>
-						<Form.Input type='text' name='password' onChange={this.handleChange} />
-						<Label> Company: </Label>
-						<Form.Input type='text' name='company' onChange={this.handleChange} />
-						<Button type='Submit' color='blue'>Login</Button>
+						<small>Also used for your chat handle</small>
+						<Form.Input 
+						type='text' 
+						name='username' 
+						placeholder='username'
+						onChange={this.handleChange}
+						required />
+						<Form.Input 
+						type='text' 
+						name='email' 
+						placeholder='email'
+						onChange={this.handleChange} 
+						required />
+						<Form.Input 
+						type='text' 
+						name='password'
+						placeholder='password' 
+						onChange={this.handleChange} 
+						required />
+						<Form.Input 
+						type='text' 
+						name='company' 
+						placeholder='company'
+						onChange={this.handleChange} 
+						required />
+						<Button 
+						type='Submit' 
+						color='blue'>Login</Button>
 					</Form>
 					<br/>
 					<br/>

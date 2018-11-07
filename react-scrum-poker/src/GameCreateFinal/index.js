@@ -28,8 +28,21 @@ class GameCreateFinal extends Component {
 	        		<Header as="h4">Estimators:</Header>
 	        		{estimators}
 			        <Divider />
-			        <Button/>
-	        	</Form>
+
+              <Button onClick={() => this.props.updateGamePageShowing("GameCreateUserStory")} 
+                color="red"
+                floated="left"
+                inverted
+              >
+                Start Over
+              </Button>	        	
+              <Button onClick={() => this.props.addGame.bind(null, this.props.gameToCreate)} 
+                color="green" 
+              	size="huge"
+              >
+                Create Game!
+              </Button>	        	
+                </Form>
         		
         	</Segment>
             

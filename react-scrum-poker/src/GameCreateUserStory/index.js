@@ -44,7 +44,7 @@ class GameCreateUserStory extends Component {
               <Grid.Row verticalAlign='middle'>
 
                 <Grid.Column style={{width: '100%'}}>
-                  <Header as="h5">Cannot be undone.</Header>
+                  <small>Cannot be undone</small><br/>
                   <Button onClick={this.handleClick} 
                     color="green" 
                     type='Submit'

@@ -53,38 +53,73 @@ class App extends Component {
         // <InstructionsContainer />
         // {this.state.logged ? <p>You are logged in</p> : <Login handleLogin={this.handleLogin} />}
 
-
-
+  onUsernameSubmitted = (username) => {
+    fetch('http://localhost:9000/chatusers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username })
+    }).then(response => {
+      this.setState({
+        username:username
+      })
+    })
+  }
   render() {
     return (
       <div className="App">
+
         {this.state.logged ? <NavHeaderLogged /> : <NavHeaderNotLogged />}
         <Switch>
-	        <Route exact path="/" component={ ()=> <InstructionsContainer appState={this.state}/> }/>
-	        <Route exact path="/auth/login" component={()=> this.state.logged ? <p>You are logged in</p> : <Login handleLogin={this.handleLogin} appState={this.state}/> }/>
-	    		<Route exact path="/profile" component={ ()=> <ProfileContainer appState={this.state}/> }/>
-      		<Route exact path="/games" component={()=> <GameContainer appState={this.state}/> } />
+	        <Route 
+          exact path="/" 
+          component={ ()=> 
+            <InstructionsContainer 
+            appState={this.state}/> }/>
+	        <Route 
+          exact path="/auth/login" 
+          component={()=> this.state.logged ? <p>You are logged in</p> : 
+            <Login
+            handleLogin={this.handleLogin} 
+            appState={this.state}/> }/>
+	    		<Route exact path="/profile" 
+          component={ ()=> 
+            <ProfileContainer 
+            appState={this.state}/> }/>
+      		<Route exact path="/games" 
+          component={()=> 
+            <GameContainer 
+            appState={this.state}/> } />
       	</Switch>
-      
 
         {this.state.pageShowing === "InstructionsContainer" ? 
           <div>
-            <InstructionsContainer updatePageShowing={this.updatePageShowing} appState={this.state}/>
+            <InstructionsContainer 
+            updatePageShowing={this.updatePageShowing} 
+            appState={this.state}/>
           </div> 
           : null} 
         {this.state.pageShowing === "Login" ? 
           <div>
-            <Login updatePageShowing={this.updatePageShowing} handleLogin={this.handleLogin} appState={this.state}/>
+            <Login 
+            updatePageShowing={this.updatePageShowing} 
+            handleLogin={this.handleLogin} 
+            appState={this.state}/>
           </div> 
           : null} 
         {this.state.pageShowing === "ProfileContainer" ? 
           <div>
-            <ProfileContainer updatePageShowing={this.updatePageShowing} appState={this.state}/>
+            <ProfileContainer 
+            updatePageShowing={this.updatePageShowing} 
+            appState={this.state}/>
           </div> 
           : null} 
         {this.state.pageShowing === "GameContainer" ? 
           <div>
-            <GameContainer updatePageShowing={this.updatePageShowing} appState={this.state}/>
+            <GameContainer 
+            updatePageShowing={this.updatePageShowing} 
+            appState={this.state}/>
           </div> 
           : null} 
       </div>

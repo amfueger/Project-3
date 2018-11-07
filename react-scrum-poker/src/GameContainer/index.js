@@ -58,12 +58,13 @@ class GameContainer extends Component {
 
 		try {
 
-			console.log(`'data' in updateEstimators() in GameContainer: `, data);
+			await console.log(`'data' in updateEstimators() in GameContainer: `, data);
 	    await this.setState({
 	    	game: {
 	    		title: this.state.game.title,
 	    		description: this.state.game.description,
-	    		estimators: data.estimators
+	    		estimators: data.estimators,
+          scrumMaster: data.scrumMaster
 	    	}
 	    });
 
@@ -97,8 +98,11 @@ class GameContainer extends Component {
       const parsedResponse = await createdGame.json();
       await console.log(`parsedResponse from addGame: `, parsedResponse);
 
-      await this.setState({game: [...this.state.game, parsedResponse.data]})
-			await console.log(`State after adding game: `, this.state);      
+      await this.setState({games: [...this.state.games, parsedResponse.data]})
+			await console.log(`State after adding game: `, this.state);
+
+      await this.props.updatePageShowing('ProfileContainer');
+
 
     } catch(err){
         console.log('error')
@@ -113,7 +117,9 @@ class GameContainer extends Component {
 
         {this.state.gamePage === "GameCreateUserStory" ? 
           <div>
-            <GameCreateUserStory updateGamePageShowing={this.updateGamePageShowing} updateUserStory={this.updateUserStory}/>
+            <GameCreateUserStory 
+            updateGamePageShowing={this.updateGamePageShowing} 
+            updateUserStory={this.updateUserStory}/>
           </div> 
           : null}       
         {this.state.gamePage === "Repos" ? 
@@ -125,13 +131,19 @@ class GameContainer extends Component {
         {this.state.gamePage === "GameCreateEstimInvites" ? 
           <div>
             <Header as="h2">Estimator Invites</Header>
-            <GameCreateEstimInvites updateGamePageShowing={this.updateGamePageShowing} updateEstimators={this.updateEstimators} appState={this.props.appState}/>
+            <GameCreateEstimInvites 
+            updateGamePageShowing={this.updateGamePageShowing} 
+            updateEstimators={this.updateEstimators} 
+            appState={this.props.appState}/>
           </div> 
           : null}  
         {this.state.gamePage === "GameCreateFinal" ? 
           <div>
             <Header as="h2">Overview</Header>
-            <GameCreateFinal updateGamePageShowing={this.updateGamePageShowing} addGame={this.addGame} gameToCreate={this.state.game}/>
+            <GameCreateFinal 
+            updateGamePageShowing={this.updateGamePageShowing} 
+            addGame={this.addGame} 
+            gameToCreate={this.state.game}/>
           </div> 
           : null}  
       	</Header>

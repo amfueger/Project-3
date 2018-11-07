@@ -20,6 +20,30 @@ class GameCreateEstimInvites extends Component {
   })
 
 
+  deleteEstimator = (e) => {
+    e.preventDefault();
+
+    console.log(`e.currentTarget.value from deleteEstimator(): `, e.currentTarget.value);
+
+
+    let estimatorsArray = [];
+
+    this.state.estimators.forEach((estimator, i) => {
+      if (estimator._id !== e.currentTarget.value && this.state.estimators.length > 1) {
+        estimatorsArray.push(estimator);
+      }
+    });
+
+    this.setState({
+      scrumMaster: this.state.scrumMaster,
+      estimators: estimatorsArray
+    });
+
+    console.log(`this.state from deleteEstimator(): `, this.state);
+
+  }
+
+
   getUsers = async () => {
     const estimators = await fetch('http://localhost:9000/users/'); 	  // Fetch all users
     const estimatorsParsedJSON = await estimators.json();
@@ -37,9 +61,9 @@ class GameCreateEstimInvites extends Component {
 
     	parsedResponse.data.forEach(elem => {
 		    if (this.props.appState.company === elem.company 
-          && this.props.appState.username !== elem.username){
+          && this.props.appState.username !== elem.username) {
 		    	estimatorsArray.push(elem);                                   // Grab estimators (same company)
-		    } else if (this.props.appState.username === elem.username){
+		    } else if (this.props.appState.username === elem.username) {
           scrumMasterGet = elem;                                        // Grab scrumMaster
           console.log(`scrumMasterGet: `, scrumMasterGet);
           console.log(`elem: `, elem);
@@ -68,7 +92,7 @@ class GameCreateEstimInvites extends Component {
 	        <Label>Estimator Email:</Label>
 	        <Form.Input type='text' name='email' value={estimator.email}/>
 
-	        <Button color="blue" type='Submit'>Delete Estimator</Button>
+	        <Button onClick={this.deleteEstimator} value={estimator._id} color="blue" type='Submit'>Delete Estimator</Button>
         </div>
 			)
   	})
