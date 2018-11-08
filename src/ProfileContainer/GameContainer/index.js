@@ -10,7 +10,7 @@ import GameCreateFinal from './GameCreateFinal';
 import GameCreateUserStory from './GameCreateUserStory';
 import GameCreateEstimInvites from './GameCreateEstimInvites';
 import { Header } from 'semantic-ui-react';
-// import { instanceLocator, testToken, username, roomId } from '..../config.js';
+import { instanceLocator, testToken, username, roomId } from './config.js';
 import Chatkit from '@pusher/chatkit';
 
 
@@ -28,7 +28,8 @@ class GameContainer extends Component {
         scrumMaster: [],
         estimators: [],
         status: 'Pending',
-        roomId: ''
+        roomId: '',
+        currentUser: ''
       }
     }
     // this.updateGamePageShowing = this.updateGamePageShowing.bind(this);
@@ -63,24 +64,19 @@ class GameContainer extends Component {
 
     console.log(`'data' in updateEstimators() in GameContainer: `, data);
 
-    // const chatManager = await new Chatkit.ChatManager({
-    //   instanceLocator: instanceLocator,
-    //   userId: username,
-    //   tokenProvider: new Chatkit.TokenProvider({
-    //     url: testToken
-    //   })
-    // });
+    const chatManager = await new Chatkit.ChatManager({
+      instanceLocator: instanceLocator,
+      userId: data.scrumMaster.username,
+      tokenProvider: new Chatkit.TokenProvider({
+        url: testToken
+      })
+    });
 
-    // console.log(`chatManager from updateEstimators(): `, );
-    // chatManager.connect()
-    // .then(currentUser => {
-    //   this.currentUser = currentUser;
-    //   this.getRooms();
-    //   this.subscribeToRoom(19409519);
-    //   console.log(`currentUser inside Chatmanager: `, currentUser);
-    // })
-    // .catch(err => console.log('err on connecting', err));
+    console.log(`chatManager from updateEstimators(): `, );
 
+    chatManager.connect()
+    .then(currentUser => {
+      console.log(`currentUser inside Chatmanager updateEstimators(): `, currentUser);
 
       this.setState({
         game: {
@@ -88,10 +84,20 @@ class GameContainer extends Component {
           description: this.state.game.description,
           estimators: data.estimators,
           scrumMaster: data.scrumMaster,
-          status: 'Pending'
+          status: 'Pending',
+          currentUser: currentUser
 
         }
       });
+
+      
+      // this.currentUser = currentUser;
+      // this.getRooms();
+      // this.subscribeToRoom(19409519);
+    })
+    .catch(err => console.log('err on connecting', err));
+
+
 
     } catch(err){
       console.error(`Error in updateEstimators() GameContainer`, err);
