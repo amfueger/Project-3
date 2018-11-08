@@ -37,6 +37,7 @@ class ProfileContainer extends Component {
 };
 
   render(){
+    console.log(`ProfileContainer.js pageShowing: `, this.state.pageShowing);
     return(
     	<div>
         <Header as="h1">User Profile: {this.state.username}</Header>

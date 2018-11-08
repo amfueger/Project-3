@@ -18,7 +18,7 @@ class GameContainer extends Component {
     super();
 
     this.state = {
-    	gamePage: 'Choose',
+    	pageShowing: 'Choose',
     	game : {
 	    	title: '',
 	    	description: '',
@@ -30,8 +30,8 @@ class GameContainer extends Component {
     // this.updateGamePageShowing = this.updateGamePageShowing.bind(this);
 	}
 
-  updateGamePageShowing = async (gamePage) => {
-      this.setState({gamePage: gamePage});
+  updateGamePageShowing = async (pageShowing) => {
+      this.setState({pageShowing: pageShowing});
   }
 
 
@@ -112,10 +112,7 @@ class GameContainer extends Component {
       const updateGameState = await fetch('http://localhost:9000/games/' + game._id, {
         method: 'PUT',
         body: JSON.stringify({
-          title: game.title,
-          description: game.description,
-          scrumMaster: game.scrumMaster,
-          estimators: game.estimators,
+          ...game,
           status: status
         }),
         headers: {
@@ -124,6 +121,8 @@ class GameContainer extends Component {
       });
 
       const updateGameStateParsed = await updateGameState.json();
+
+      console.log(`updateGameStateParsed: `, updateGameStateParsed);
 
       // this.setState({
       //   showEditModal: false,
@@ -148,11 +147,12 @@ class GameContainer extends Component {
 
 
     render(){
+    console.log(`GameContainer.js pageShowing: `, this.state.pageShowing);
       return(
         <fieldset>
       	<legend as="h1">Games</legend>
         
-        {this.state.gamePage === "Choose" ? 
+        {this.state.pageShowing === "Choose" ? 
           <div>
             <Choose 
             updateGamePageShowing={this.updateGamePageShowing} 
@@ -160,7 +160,7 @@ class GameContainer extends Component {
           </div> 
           : null}
 
-        {this.state.gamePage === "GameCreateUserStory" ? 
+        {this.state.pageShowing === "GameCreateUserStory" ? 
           <div>
             <GameCreateUserStory 
             updateGamePageShowing={this.updateGamePageShowing} 
@@ -168,21 +168,21 @@ class GameContainer extends Component {
           </div> 
           : null}
 
-        {this.state.gamePage === "Repos" ? 
+        {this.state.pageShowing === "Repos" ? 
           <div>
             <Header as="h2">Repos</Header>
             <Repos updateGamePageShowing={this.updateGamePageShowing} />
           </div> 
           : null}
 
-        {this.state.gamePage === "RepoIssues" ? 
+        {this.state.pageShowing === "RepoIssues" ? 
           <div>
             <Header as="h2">RepoIssues</Header>
             <RepoIssues updateGamePageShowing={this.updateGamePageShowing} />
           </div> 
           : null}
 
-        {this.state.gamePage === "GameCreateEstimInvites" ? 
+        {this.state.pageShowing === "GameCreateEstimInvites" ? 
           <div>
             <Header as="h2">Estimator Invites</Header>
             <GameCreateEstimInvites 
@@ -192,7 +192,7 @@ class GameContainer extends Component {
           </div> 
           : null}
 
-        {this.state.gamePage === "GameCreateFinal" ? 
+        {this.state.pageShowing === "GameCreateFinal" ? 
           <div>
             <Header as="h2">Overview</Header>
             <GameCreateFinal 
@@ -202,20 +202,20 @@ class GameContainer extends Component {
           </div> 
           : null}
 
-        {this.state.gamePage === "GamesPast" ? 
+        {this.state.pageShowing === "GamesPast" ? 
           <div>
             <Header as="h2">GamesPast</Header>
             <GamesPast updateGamePageShowing={this.updateGamePageShowing} />
           </div> 
           : null}
 
-        {this.state.gamePage === "GameCurrent" ? 
+        {this.state.pageShowing === "GameCurrent" ? 
           <div>
             <GameCurrent updateGamePageShowing={this.updateGamePageShowing} />
           </div> 
           : null}
 
-        {this.state.gamePage === "GamesPending" ? 
+        {this.state.pageShowing === "GamesPending" ? 
           <div>
             <GamesPending 
               updateGamePageShowing={this.updateGamePageShowing}

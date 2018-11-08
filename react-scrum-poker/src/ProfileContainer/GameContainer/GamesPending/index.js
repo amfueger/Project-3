@@ -24,7 +24,7 @@ class GamesPending extends Component {
     this.getGames().then(parsedResponse => { 
 
         const scrumMasterGames = parsedResponse.data.map(game => {
-            if (game.scrumMaster.username === parsedResponse.session.username) {
+            if (game.scrumMaster.username === parsedResponse.session.username && game.status === "Pending") {
                 return (
                     <Segment key={game._id}>
                         <Header as="h3">{game.title}</Header>
@@ -41,7 +41,7 @@ class GamesPending extends Component {
 
         parsedResponse.data.forEach(game => {
             game.estimators.forEach(estimator => {
-                if (estimator.username === parsedResponse.session.username) {
+                if (estimator.username === parsedResponse.session.username && game.status === "Pending") {
                     estimatorGames.push(game);
                 }
             })

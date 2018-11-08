@@ -7,35 +7,35 @@ class Choose extends Component {
         return(
 			<Segment placeholder>
 			<Header as="h2">My Games</Header>
-			<Grid columns={2} divided stackable textAlign='center'>
+			<Grid columns={3} divided stackable textAlign='center'>
 
-			  <Grid.Row verticalAlign='middle'>
-			    <Grid.Column>
+			  <Grid.Row >
+			    <Grid.Column verticalAlign='middle'>
 			      <Button primary color="green" onClick={() => this.props.updateGamePageShowing("GameCreateUserStory")}>
 				      New Game
-				    </Button>
-			    </Grid.Column>
-				  
-				  <Divider vertical></Divider>
+				  </Button>
 
-			    <Grid.Column>
-			      <Button primary color="green" onClick={() => this.props.updateGamePageShowing("GameCurrent")}>
-				      Current Game
+			      <Button primary color="black" inverted onClick={() => this.props.updateGamePageShowing("Repos")}>
+				      New Game <br/>with GitHub
 				    </Button>
 			    </Grid.Column>
 			  </Grid.Row>
 
-			  <Grid.Row verticalAlign='middle'>
+			  <Grid.Row >  
 			    <Grid.Column>
-			      <Button primary color="green" onClick={() => this.props.updateGamePageShowing("GamesPending")}>
+			      <Button color="green" onClick={() => this.props.updateGamePageShowing("GameCurrent")}>
+				      Current Game
+				    </Button>
+
+			      <Button inverted color="red" onClick={() => this.props.updateGamePageShowing("GamesPending")}>
 				      Pending Games
 				    </Button>
 			    </Grid.Column>
+			  </Grid.Row>
 				  
-				  <Divider vertical></Divider>
-
+			  <Grid.Row verticalAlign='middle'>
 			    <Grid.Column>
-			      <Button primary color="green" onClick={() => this.props.updateGamePageShowing("GamesPast")}>
+			      <Button onClick={() => this.props.updateGamePageShowing("GamesPast")}>
 				      Past Games
 				    </Button>
 			    </Grid.Column>

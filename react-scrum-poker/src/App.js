@@ -19,7 +19,7 @@ class App extends Component {
     super();
 
     this.state = {
-      pageShowing: 'Register',
+      pageShowing: 'Login',
     	logged: false,
     	username: '',
       userId: '',
@@ -40,7 +40,7 @@ class App extends Component {
   }
 
 
-  updatePageShowing = async (pageShowing) => {
+  updatePageShowing = (pageShowing) => {
     this.setState({pageShowing: pageShowing});
   }
 

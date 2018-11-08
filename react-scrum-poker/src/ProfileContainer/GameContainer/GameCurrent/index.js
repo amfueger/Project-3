@@ -6,7 +6,7 @@ class GameCurrent extends Component {
   constructor(){
         super();
         this.state = {
-        	currentGame: null,
+        	currentGame: [],
         	chatState: '' 			// Hidden or shown
         }
     }
@@ -14,7 +14,8 @@ class GameCurrent extends Component {
   getGames = async () => {
     const games = await fetch('http://localhost:9000/games', {    		// Fetch all games
 	      credentials: 'include'
-	    }); 	  
+	    }); 
+
     const gamesParsedJSON = await games.json();
     
     console.log(`gamesParsedJSON from GamesPending: `, gamesParsedJSON);
@@ -26,33 +27,35 @@ class GameCurrent extends Component {
 
     	console.log(`parsedResponse in componentDidMount GameCurrent: `, parsedResponse);
 
-    	let currentGame = null;
-
     	parsedResponse.data.forEach(game => {
 			if (game.status === 'Current') {							// Find the ONE game that is current and set state
-				currentGame = game;
+		    	this.setState({currentGame: game})
 			}
     	});
 
-    	this.setState({currentGame: currentGame})
 
     }).catch((err) => {
       console.error(`Error: `, err);
-    })    
-    
+    })     
   }
 
 	// -----v----- This is where the ChatBox should be rendered/hidden -----v----- //
-	        		// <Header as="h3">{currentGame.title}</Header>
-	        		// <Header as="h4">{currentGame.description}</Header>
-	            // {this.state.currentGame.title}
 
     render(){
       	console.log(`this.state in GameCurrent: `, this.state);
-    	// const currentGame = this.state.currentGame;
+    	// const currentGame = this.state.currentGame.map(game => {
+    	// 	return (
+    	// 	)
+    	// });
+
         return(
         	<div>
 	            <Header as="h1">Current Game</Header>
+	            <Segment>
+	        		<Header as="h3">{this.state.currentGame.title}</Header>
+	        		<Header as="h4">{this.state.currentGame.description}</Header>
+	        		<Segment>This is where the Chat, Vote, and Intermission/End Components will live.</Segment>
+	            </Segment>
             </div>
             
         )

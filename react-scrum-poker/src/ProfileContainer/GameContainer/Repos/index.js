@@ -51,24 +51,40 @@ class Repos extends Component {
 
     // let isArr = Array.isArray(this.props.allRepos);
     // console.log(`this.props.allRepos isArr: `, isArr);
+    // if (allRepos !== null && allRepos !== undefined) {
+    //   let allRepos = Array.from(this.props.allRepos);
+    //   console.log(`allRepos: `, allRepos);
 
-    let allRepos = Array.from(this.props.allRepos);
-    console.log(`allRepos: `, allRepos);
+    //   let gitHubUserReposList = allRepos.map((repo, i) => {
+    //     return (
+    //       <Dropdown.Item text={repo.name} key={repo.id} value={repo.name} onClick={this.handleClick}/>
+    //    )
+    //   })
+    // } else {
+    //   let gitHubUserReposList = []
+    // }
 
-    const gitHubUserReposList = allRepos.map((repo, i) => {
-      return (
-        <Dropdown.Item text={repo.name} key={repo.id} value={repo.name} onClick={this.handleClick}/>
-     )
-    })
+    // console.log(this.state);
 
-    console.log(this.state);
+    /*  <div>
+        <h2>GitHub User Repos List</h2>
+        {!this.state.repos ? 
+        <Dropdown 
+          placeholder='Select Repo' 
+          fluid selection 
+          options={gitHubUserReposList} 
+          text={this.state.repoName}/>
+        : <p>You Have No Repos</p>}
+          
+          {this.state.repoSelected ? 
+            <RepoIssues 
+              repoName={this.state.repoName} 
+              username={this.props.username}/> 
+              : <p>Select a Repo above to view issues</p>}
+      </div>*/
 
     return (
-      <div>
-        <h2>GitHub User Repos List</h2>
-        <Dropdown placeholder='Select Repo' fluid selection options={gitHubUserReposList} text={this.state.repoName}/>
-        {this.state.repoSelected ? <RepoIssues repoName={this.state.repoName} username={this.props.username}/> : <p>Select a Repo above to view issues</p>}
-      </div>
+      <div>Repos</div>
     )
   }
 }
