@@ -10,8 +10,9 @@ import GameCreateFinal from './GameCreateFinal';
 import GameCreateUserStory from './GameCreateUserStory';
 import GameCreateEstimInvites from './GameCreateEstimInvites';
 import { Header } from 'semantic-ui-react';
-import { instanceLocator, testToken, username, roomId } from './config.js';
+import chatKeys from './config.js';
 import Chatkit from '@pusher/chatkit';
+// import serverURL from '.../serverURL.js';
 
 
 
@@ -65,16 +66,16 @@ class GameContainer extends Component {
     console.log(`'data' in updateEstimators() in GameContainer: `, data);
 
     const chatManager = await new Chatkit.ChatManager({
-      instanceLocator: instanceLocator,
+      instanceLocator: chatKeys.instanceLocator,
       userId: data.scrumMaster.username,
       tokenProvider: new Chatkit.TokenProvider({
-        url: testToken
+        url: chatKeys.testToken
       })
     });
 
-    console.log(`chatManager from updateEstimators(): `, );
+    console.log(`chatManager from updateEstimators(): `, chatManager);
 
-    chatManager.connect()
+    await chatManager.connect()
     .then(currentUser => {
       console.log(`currentUser inside Chatmanager updateEstimators(): `, currentUser);
 
@@ -89,11 +90,6 @@ class GameContainer extends Component {
 
         }
       });
-
-      
-      // this.currentUser = currentUser;
-      // this.getRooms();
-      // this.subscribeToRoom(19409519);
     })
     .catch(err => console.log('err on connecting', err));
 

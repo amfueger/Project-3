@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import serverURL from './serverURL.js';
 
 
 class GamesPast extends Component {

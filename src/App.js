@@ -46,8 +46,8 @@ class App extends Component {
   }
 
 
-  onUsernameSubmitted = (username) => {
-    fetch('http://localhost:9000/chatusers', {
+  onUsernameSubmitted = async (username) => {
+    await fetch(serverURL + 'chatusers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
