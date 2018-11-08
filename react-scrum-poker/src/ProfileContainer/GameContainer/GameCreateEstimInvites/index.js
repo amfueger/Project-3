@@ -45,7 +45,9 @@ class GameCreateEstimInvites extends Component {
 
 
   getUsers = async () => {
-    const estimators = await fetch('http://localhost:9000/users/'); 	  // Fetch all users
+    const estimators = await fetch('http://localhost:9000/users/', {    // Fetch all users
+      credentials: 'include'
+    }); 	  
     const estimatorsParsedJSON = await estimators.json();
     await console.log(`estimatorsParsedJSON: `, estimatorsParsedJSON);
     return estimatorsParsedJSON;
@@ -60,15 +62,19 @@ class GameCreateEstimInvites extends Component {
       let scrumMasterGet = null;
 
     	parsedResponse.data.forEach(elem => {
-		    if (this.props.appState.company === elem.company 
-          && this.props.appState.username !== elem.username) {
-		    	estimatorsArray.push(elem);                                   // Grab estimators (same company)
-		    } else if (this.props.appState.username === elem.username) {
-          scrumMasterGet = elem;                                        // Grab scrumMaster
+        if (this.props.appState.username === elem.username) {
+          scrumMasterGet = elem;                                        // Grab scrumMaster which will provide company name
           console.log(`scrumMasterGet: `, scrumMasterGet);
           console.log(`elem: `, elem);
         }
-    	})
+    	});
+
+      parsedResponse.data.forEach(elem => {
+        if (scrumMasterGet.company === elem.company 
+          && scrumMasterGet.username !== elem.username) {
+          estimatorsArray.push(elem);                                   // Grab estimators (same company)
+        }
+      });
 
       this.setState({
         scrumMaster: scrumMasterGet,

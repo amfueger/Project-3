@@ -1,26 +1,40 @@
 import React, { Component } from 'react';
 import { Header, Menu } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 
 class NavHeaderLogged extends Component {
-	state = {}
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+	handleLogout = async () => {
+	    try {
+	      const logoutRequest = await fetch('http://localhost:9000/auth/logout', {
+	        credentials: 'include'
+	      });
+
+	      const parsedResponse = await logoutRequest.json();
+
+	      await console.log(`parsedResponse from Logout: `, parsedResponse);
+
+	      await this.props.updatePageShowing('Login');
+
+	      // return parsedResponse;
+
+	    } catch(err){
+	        console.log('Error: ', err);
+	    }
+  	}
 
 	render(){
-	  const { activeItem } = this.state;
 	return(
 		<Header>
 			<Menu>
-				<Menu.Item as={ Link } name='home' to='/' active={activeItem === 'home'} onClick={this.handleItemClick}>
-			    Home
+				<Menu.Item onClick={() => this.props.updatePageShowing("InstructionsContainer")}>
+			    	Home
 				</Menu.Item>
 
-				<Menu.Item as={ Link } name='profile' to='/profile' active={activeItem === 'profile'} onClick={this.handleItemClick}>
+				<Menu.Item onClick={() => this.props.updatePageShowing("ProfileContainer")}>
 					My Profile
 				</Menu.Item>
 
-				<Menu.Item as={ Link } name='logout' to='/logout' active={activeItem === 'logout'} onClick={this.handleItemClick}>
+				<Menu.Item onClick={this.handleLogout}>
 					Logout
 				</Menu.Item>
 			</Menu>

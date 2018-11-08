@@ -23,6 +23,7 @@ class ChatContainer extends Component{
 		}
 	}
 	componentDidMount(){
+		
 		const chatManager = new Chatkit.ChatManager({
 			instanceLocator: instanceLocator,
 			userId: username,
@@ -30,6 +31,7 @@ class ChatContainer extends Component{
 				url: testToken
 			})
 		})
+
 		chatManager.connect()
 		.then(currentUser => {
 			this.currentUser = currentUser

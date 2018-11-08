@@ -1,50 +1,74 @@
 import React, { Component } from 'react';
-import { Button, Divider, Grid, Header, Segment } from 'semantic-ui-react'
-import { Link } from 'react-router-dom';
+import { Header } from 'semantic-ui-react'
+import GameContainer from './GameContainer';
+import ProfileEdit from './ProfileEdit';
 
 class ProfileContainer extends Component {
+
+	constructor(){
+    super();
+
+    this.state = {
+      pageShowing: 'GameContainer',
+      username: '',
+      userId: '',
+      company: ''
+    }
+	}
+
+  updatePageShowing = async (pageShowing) => {
+    await console.log(`pageShowing: `, pageShowing);
+
+    await this.setState({
+    	pageShowing: pageShowing,
+    });
+
+  	await console.log(`this.state from updatePageShowing() ProfileContainer: `, this.state);
+  }
+
+
+ // updateUser = () => {
+ 		
+ // }
+
+  componentWillMount = async () => {
+ 	  await this.setState({
+     	username: this.props.appState.username,
+      userId: this.props.appState.userId
+      // company: this.props.appState.company 	
+    });
+
+	await console.log(`this.state from componentWillMount() ProfileContainer: `, this.state);
+};
 
   render(){
     return(
     	<div>
-    	<Header as="h2">My Profile - ProfileContainer</Header>
-			<Segment placeholder>
-			<Grid columns={2} divided stackable textAlign='center'>
+        <Header as="h2">---------- My Profile - ProfileContainer ----------</Header>
+        
+        {this.state.pageShowing === "GameContainer" ? 
+	        <div>
+	          <GameContainer 
+	          updatePageShowing={this.updatePageShowing} 
+	          appState={this.state}/>
+	        </div> 
+	        : null
+	      }
 
-			  <Grid.Row verticalAlign='middle'>
-			    <Grid.Column>
-			      <Button primary color="green" onClick={() => this.props.updatePageShowing("GameContainer")}>
-				      New Game
-				    </Button>
-			    </Grid.Column>
-				  
-				  <Divider vertical></Divider>
+        {this.state.pageShowing === "ProfileEdit" ? 
+	        <div>
+	          <ProfileEdit 
+	          updatePageShowing={this.updatePageShowing} 
+	          appState={this.state}/>
+	        </div> 
+	        : null
+	      }
 
-			    <Grid.Column>
-			      <Button primary as={ Link } name='current' to='current'>
-				      Current Games
-				    </Button>
-			    </Grid.Column>
-			  </Grid.Row>
-
-			</Grid>
-			</Segment>
-			</div>
+		</div>
     )
   }
 }
+
+
 export default ProfileContainer;
 
-				// <Grid.Row verticalAlign='middle'>
-			 //    <Grid.Column>
-			 //      <Button primary as={ Link } name='pending' to='pending'>
-				//       Pending Games
-			 //      </Button>
-			 //    </Grid.Column>
-
-			 //    <Grid.Column>
-			 //      <Button primary as={ Link } name='past' to='past'>
-				//       Past Games
-				//     </Button>
-			 //    </Grid.Column>
-			 //  </Grid.Row>
