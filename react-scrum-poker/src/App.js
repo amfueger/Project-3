@@ -32,7 +32,6 @@ class App extends Component {
 
 
   handleRegisterLogin = (username, userId, isLogged) => {
- 
     this.setState({
       username: username,
       userId: userId,

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Segment, Grid, Divider, Button } from 'semantic-ui-react';
+import { Segment, Grid, Divider, Button, Header } from 'semantic-ui-react';
 
 
 class Choose extends Component {
     render(){
         return(
 			<Segment placeholder>
+			<Header as="h2">My Games</Header>
 			<Grid columns={2} divided stackable textAlign='center'>
 
 			  <Grid.Row verticalAlign='middle'>
@@ -19,7 +20,7 @@ class Choose extends Component {
 
 			    <Grid.Column>
 			      <Button primary color="green" onClick={() => this.props.updateGamePageShowing("GameCurrent")}>
-				      Current Games
+				      Current Game
 				    </Button>
 			    </Grid.Column>
 			  </Grid.Row>

@@ -17,13 +17,9 @@ class ProfileContainer extends Component {
 	}
 
   updatePageShowing = async (pageShowing) => {
-    await console.log(`pageShowing: `, pageShowing);
-
-    await this.setState({
+    this.setState({
     	pageShowing: pageShowing,
     });
-
-  	await console.log(`this.state from updatePageShowing() ProfileContainer: `, this.state);
   }
 
 
@@ -33,13 +29,11 @@ class ProfileContainer extends Component {
 
 
   componentWillMount = async () => {
- 	  await this.setState({
+ 	  this.setState({
      	username: this.props.appState.username,
       userId: this.props.appState.userId
       // company: this.props.appState.company 	
     });
-
-	await console.log(`this.state from componentWillMount() ProfileContainer: `, this.state);
 };
 
   render(){

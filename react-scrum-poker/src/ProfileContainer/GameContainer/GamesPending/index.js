@@ -20,10 +20,6 @@ class GamesPending extends Component {
     return gamesParsedJSON;
   };
 
-  // updateGameState = async () => {
-
-  // };
-
   componentDidMount(){
     this.getGames().then(parsedResponse => { 
 
@@ -33,7 +29,7 @@ class GamesPending extends Component {
                     <Segment key={game._id}>
                         <Header as="h3">{game.title}</Header>
                         <p>{game.description}</p>
-                        <Button>Join</Button>
+                        <Button onClick={() => this.props.updateGameStatus(game)}>Join</Button>
                     </Segment>
                 ) 
             } else {
@@ -56,7 +52,7 @@ class GamesPending extends Component {
                 <Segment key={game._id}>
                     <Header as="h3">{game.title}</Header>
                     <p>{game.description}</p>
-                    <Button>Join</Button>
+                    <Button onClick={() => this.props.updateGameStatus(game, "Current")}>Join</Button>
                 </Segment>
             ) 
         })
