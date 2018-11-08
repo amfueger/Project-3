@@ -49,7 +49,7 @@ class GameCreateEstimInvites extends Component {
       credentials: 'include'
     }); 	  
     const estimatorsParsedJSON = await estimators.json();
-    await console.log(`estimatorsParsedJSON: `, estimatorsParsedJSON);
+    console.log(`estimatorsParsedJSON: `, estimatorsParsedJSON);
     return estimatorsParsedJSON;
   };
 

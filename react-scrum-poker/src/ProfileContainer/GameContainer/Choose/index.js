@@ -5,7 +5,7 @@ import { Segment, Grid, Divider, Button } from 'semantic-ui-react';
 class Choose extends Component {
     render(){
         return(
-			<Segment placeholder style={{maxWidth: '600px'}}>
+			<Segment placeholder>
 			<Grid columns={2} divided stackable textAlign='center'>
 
 			  <Grid.Row verticalAlign='middle'>

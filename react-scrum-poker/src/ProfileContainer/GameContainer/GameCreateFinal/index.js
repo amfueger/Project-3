@@ -15,12 +15,12 @@ class GameCreateFinal extends Component {
 	        </div>
 			)
     	})
-
-        return(
+        // .bind(null, this.props.gameToCreate) 
+       return(
         	<Segment>
 	        	<Header as="h1">GameCreateFinal</Header>
 
-	        	<Form onSubmit={this.props.addGame.bind(null, this.props.gameToCreate)}>
+	        	<Form onSubmit={this.props.addGame}>
 		        	<Header as="h4">User Story</Header>
 			        <Input label="Title:" type='text' name='title' value={this.props.gameToCreate.title}/>
 			        <Input label="Description:" type='text' name='description' value={this.props.gameToCreate.description}/>
