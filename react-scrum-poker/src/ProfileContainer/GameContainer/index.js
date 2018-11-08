@@ -18,7 +18,7 @@ class GameContainer extends Component {
     super();
 
     this.state = {
-    	gamePage: 'Choose',
+    	pageShowing: 'Choose',
     	game : {
 	    	title: '',
 	    	description: '',
@@ -30,8 +30,8 @@ class GameContainer extends Component {
     // this.updateGamePageShowing = this.updateGamePageShowing.bind(this);
 	}
 
-  updateGamePageShowing = async (gamePage) => {
-      this.setState({gamePage: gamePage});
+  updateGamePageShowing = async (pageShowing) => {
+      this.setState({pageShowing: pageShowing});
   }
 
 
@@ -103,38 +103,86 @@ class GameContainer extends Component {
     }
   }
 
+
+  updateGameStatus = async (game, status) => {
+    // e.preventDefault();
+
+    try {
+
+      const updateGameState = await fetch('http://localhost:9000/games/' + game._id, {
+        method: 'PUT',
+        body: JSON.stringify({
+          ...game,
+          status: status
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const updateGameStateParsed = await updateGameState.json();
+
+      console.log(`updateGameStateParsed: `, updateGameStateParsed);
+
+      // this.setState({
+      //   showEditModal: false,
+      //   movies: newMovieArrayWithEdit
+      // });
+      if (game.status === "Current") {
+        this.updateGamePageShowing("GameCurrent");
+      } else if (game.status === "Past") {
+        this.updateGamePageShowing("GamesPast");
+      } else {
+        this.updateGamePageShowing("Choose");
+      }
+
+      console.log(`updateGameStateParsed -> parsed edit: `, updateGameStateParsed);
+
+    } catch(err){
+      console.log(err)
+    }
+    
+
+  };
+
+
     render(){
+    console.log(`GameContainer.js pageShowing: `, this.state.pageShowing);
       return(
         <fieldset>
       	<legend as="h1">Games</legend>
         
-        {this.state.gamePage === "Choose" ? 
+        {this.state.pageShowing === "Choose" ? 
           <div>
             <Choose 
             updateGamePageShowing={this.updateGamePageShowing} 
             />
           </div> 
-          : null} 
-        {this.state.gamePage === "GameCreateUserStory" ? 
+          : null}
+
+        {this.state.pageShowing === "GameCreateUserStory" ? 
           <div>
             <GameCreateUserStory 
             updateGamePageShowing={this.updateGamePageShowing} 
             updateUserStory={this.updateUserStory}/>
           </div> 
-          : null}       
-        {this.state.gamePage === "Repos" ? 
+          : null}
+
+        {this.state.pageShowing === "Repos" ? 
           <div>
             <Header as="h2">Repos</Header>
             <Repos updateGamePageShowing={this.updateGamePageShowing} />
           </div> 
-          : null}  
-        {this.state.gamePage === "RepoIssues" ? 
+          : null}
+
+        {this.state.pageShowing === "RepoIssues" ? 
           <div>
             <Header as="h2">RepoIssues</Header>
             <RepoIssues updateGamePageShowing={this.updateGamePageShowing} />
           </div> 
-          : null}          
-        {this.state.gamePage === "GameCreateEstimInvites" ? 
+          : null}
+
+        {this.state.pageShowing === "GameCreateEstimInvites" ? 
           <div>
             <Header as="h2">Estimator Invites</Header>
             <GameCreateEstimInvites 
@@ -142,8 +190,9 @@ class GameContainer extends Component {
             updateEstimators={this.updateEstimators} 
             appState={this.props.appState}/>
           </div> 
-          : null}  
-        {this.state.gamePage === "GameCreateFinal" ? 
+          : null}
+
+        {this.state.pageShowing === "GameCreateFinal" ? 
           <div>
             <Header as="h2">Overview</Header>
             <GameCreateFinal 
@@ -151,24 +200,29 @@ class GameContainer extends Component {
             addGame={this.addGame} 
             gameToCreate={this.state.game}/>
           </div> 
-          : null}  
-        {this.state.gamePage === "GamesPast" ? 
+          : null}
+
+        {this.state.pageShowing === "GamesPast" ? 
           <div>
             <Header as="h2">GamesPast</Header>
             <GamesPast updateGamePageShowing={this.updateGamePageShowing} />
           </div> 
-          : null}          
-        {this.state.gamePage === "GameCurrent" ? 
+          : null}
+
+        {this.state.pageShowing === "GameCurrent" ? 
           <div>
-            <Header as="h2">GameCurrent</Header>
             <GameCurrent updateGamePageShowing={this.updateGamePageShowing} />
           </div> 
-          : null}          
-        {this.state.gamePage === "GamesPending" ? 
+          : null}
+
+        {this.state.pageShowing === "GamesPending" ? 
           <div>
-            <GamesPending updateGamePageShowing={this.updateGamePageShowing} />
+            <GamesPending 
+              updateGamePageShowing={this.updateGamePageShowing}
+              updateGameStatus={this.updateGameStatus} />
           </div> 
-          : null}          
+          : null}
+
         </fieldset>	
       )
     }

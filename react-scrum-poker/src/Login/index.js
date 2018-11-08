@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Label, Segment, Header, Message } from 'semantic-ui-react';
+import { Form, Button, Segment, Header, Message } from 'semantic-ui-react';
 
 
 class Login extends Component {
@@ -54,15 +54,20 @@ class Login extends Component {
     render(){
         return(
 			<div>
-				<Segment>
-					<Header as="h1">Login</Header>
+				<Segment style={{textAlign: 'left'}}>
+
+				    <Button floated="right" color="green" onClick={() => this.props.updatePageShowing("Register")}>
+				      <small>Not a member yet?</small><br/>
+				      Register
+				    </Button>					
+
+				    <Header as="h1">Login</Header>
 					<Form onSubmit={this.handleSubmit}>
 
 						<Message hidden={this.state.hidden}>
 							Invalid Password/Username (Case Sensitive)
 						</Message>
 
-						<Label> Username: </Label><br />
 						<Form.Input 
 						type='text' 
 						name='username' 
@@ -70,7 +75,6 @@ class Login extends Component {
 						onChange={this.handleChange}
 						required />
 						
-						<Label> Password: </Label>
 						<Form.Input 
 						type='password' 
 						name='password'

@@ -93,7 +93,7 @@ class Register extends Component {
 				    </Button>
 
 					<Header as="h1" style={{textAlign: 'left'}}>Register</Header>
-					<Form>
+					<Form onSubmit={this.handleSubmit}>
 						<small>Also used for your chat handle</small>
 						<Message hidden={this.state.hidden}>
 							Username already taken
