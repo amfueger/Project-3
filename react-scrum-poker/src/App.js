@@ -31,23 +31,18 @@ class App extends Component {
 	}
 
 
-  handleRegisterLogin = (username, /*company,*/ userId, isLogged) => {
+  handleRegisterLogin = (username, userId, isLogged) => {
  
-      this.setState({
-        username: username,
-        // company: company,
-        userId: userId,
-        logged: isLogged
-      });
-
-      console.log(`this.state in App after Register: `, this.state);
+    this.setState({
+      username: username,
+      userId: userId,
+      logged: isLogged
+    });
   }
 
 
   updatePageShowing = async (pageShowing) => {
-      console.log(`pageShowing: `, pageShowing);
-
-      await this.setState({pageShowing: pageShowing});
+    this.setState({pageShowing: pageShowing});
   }
 
 
@@ -85,6 +80,9 @@ class App extends Component {
 
 
   render() {
+
+    console.log(`App.js pageShowing: `, this.state.pageShowing);
+
     return (
       <div className="App">
 

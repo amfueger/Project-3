@@ -19,7 +19,6 @@ class GameContainer extends Component {
 
     this.state = {
     	gamePage: 'Choose',
-    	games: [],
     	game : {
 	    	title: '',
 	    	description: '',
@@ -28,13 +27,11 @@ class GameContainer extends Component {
         status: 'Pending'
 	    }
     }
-    this.updateGamePageShowing = this.updateGamePageShowing.bind(this);
+    // this.updateGamePageShowing = this.updateGamePageShowing.bind(this);
 	}
 
   updateGamePageShowing = async (gamePage) => {
-      console.log(`gamePage: `, gamePage);
-
-      await this.setState({gamePage: gamePage});
+      this.setState({gamePage: gamePage});
   }
 
 
@@ -42,15 +39,12 @@ class GameContainer extends Component {
 		e.preventDefault();
 
 		try {
-			await console.log(`userStory: `, userStory);
-	    await this.setState({
+	    this.setState({
 	    	game: {
 	    		title: userStory.title,
 	    		description: userStory.description
 	    	}
 	    });
-
-	    await console.log(`this.state in updateUserStory() GameContainer: `, this.state);
 
 		} catch(err){
 			console.error(`Error in updateUserStory() GameContainer`, err);
@@ -63,17 +57,17 @@ class GameContainer extends Component {
 
 		try {
 
-			await console.log(`'data' in updateEstimators() in GameContainer: `, data);
-	    await this.setState({
+			console.log(`'data' in updateEstimators() in GameContainer: `, data);
+
+	    this.setState({
 	    	game: {
 	    		title: this.state.game.title,
 	    		description: this.state.game.description,
 	    		estimators: data.estimators,
-          scrumMaster: data.scrumMaster
+          scrumMaster: data.scrumMaster,
+          status: 'Pending'
 	    	}
 	    });
-
-	    await console.log(`this.state in updateEstimators() GameContainer: `, this.state);
 
 		} catch(err){
 			console.error(`Error in updateEstimators() GameContainer`, err);
@@ -82,16 +76,16 @@ class GameContainer extends Component {
 	}
 
 
-  addGame = async (game, e) => {
-    e.preventDefault();
-    console.log(`this.state in addGame() GameContainer: `, this.state);
-    console.log(`game in addGame() GameContainer: `, game);
+  addGame = async () => {
 
     try {
+
+      console.log(`this.state in addGame() GameContainer before fetch: `, this.state);
+
       const createdGame = await fetch('http://localhost:9000/games/', {
         method: 'POST',
         credentials: 'include',
-        body: JSON.stringify(game),
+        body: JSON.stringify(this.state.game),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -99,13 +93,9 @@ class GameContainer extends Component {
 
       const parsedResponse = await createdGame.json();
 
-      await console.log(`parsedResponse from addGame: `, parsedResponse);
+      console.log(`parsedResponse from addGame: `, parsedResponse);
 
-      await this.setState({games: [...this.state.games, parsedResponse.data]});
-
-			await console.log(`State after adding game: `, this.state);
-
-      await this.updateGamePageShowing('Choose');
+      this.updateGamePageShowing('Choose');
 
     } catch(err){
         console.log('error')
@@ -114,10 +104,9 @@ class GameContainer extends Component {
   }
 
     render(){
-    	console.log(`this.state.game from GameContainer on render`, this.state.game);
       return(
-        <div>
-      	<Header as="h1">--------------- GameContainer ---------------</Header>
+        <fieldset>
+      	<legend as="h1">Games</legend>
         
         {this.state.gamePage === "Choose" ? 
           <div>
@@ -177,11 +166,10 @@ class GameContainer extends Component {
           : null}          
         {this.state.gamePage === "GamesPending" ? 
           <div>
-            <Header as="h2">GamesPending</Header>
             <GamesPending updateGamePageShowing={this.updateGamePageShowing} />
           </div> 
           : null}          
-          </div>	
+        </fieldset>	
       )
     }
 }

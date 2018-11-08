@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Label, Segment, Header, Message } from 'semantic-ui-react';
+import { Form, Button, Segment, Header, Message } from 'semantic-ui-react';
 // import gitHubStuff from '../gitHubStuff.js';
 
 
@@ -43,7 +43,6 @@ class Register extends Component {
 		console.log(`<Register> handleSubmit() parsedResponse`, parsedResponse);
 
 		if (parsedResponse.data === 'Register Successful') {								// If register success
-			this.messageHidden(true);
 			this.props.handleRegisterLogin(														// Pass data up to App.js
 				parsedResponse.session.username, 
 				// parsedResponse.session.company, 
@@ -86,11 +85,15 @@ class Register extends Component {
 		// console.log(`gitHubStuff: `, gitHubStuff);
 		return(
 			<div>
-				<Segment>
-					<Header as="h1">Register</Header>
-					<Form onSubmit={this.handleSubmit}>
+				<Segment style={{textAlign: 'left'}}>
 
-						<Label> Username: </Label><br />
+				    <Button floated="right" color="green" onClick={() => this.props.updatePageShowing("Login")}>
+				      <small>Already a member?</small><br/>
+				      Login
+				    </Button>
+
+					<Header as="h1" style={{textAlign: 'left'}}>Register</Header>
+					<Form>
 						<small>Also used for your chat handle</small>
 						<Message hidden={this.state.hidden}>
 							Username already taken
@@ -103,7 +106,6 @@ class Register extends Component {
 						onChange={this.handleChange}
 						required />
 
-						<Label> Email: </Label>
 						<Form.Input 
 						type='text' 
 						name='email' 
@@ -111,7 +113,6 @@ class Register extends Component {
 						onChange={this.handleChange} 
 						required />
 
-						<Label> Password: </Label>
 						<Form.Input 
 						type='password' 
 						name='password'
@@ -119,7 +120,6 @@ class Register extends Component {
 						onChange={this.handleChange} 
 						required />
 
-						<Label> Company: </Label>
 						<Form.Input 
 						type='text' 
 						name='company' 

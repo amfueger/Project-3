@@ -31,6 +31,7 @@ class ProfileContainer extends Component {
  		
  // }
 
+
   componentWillMount = async () => {
  	  await this.setState({
      	username: this.props.appState.username,
@@ -44,7 +45,7 @@ class ProfileContainer extends Component {
   render(){
     return(
     	<div>
-        <Header as="h2">---------- My Profile - ProfileContainer ----------</Header>
+        <Header as="h1">User Profile: {this.state.username}</Header>
         
         {this.state.pageShowing === "GameContainer" ? 
 	        <div>
