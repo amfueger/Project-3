@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Segment, Header } from 'semantic-ui-react';
 // import serverURL from './serverURL.js';
+import VoteContainer from '../VoteContainer';
 
 
 class GameCurrent extends Component {
