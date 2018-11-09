@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Segment, Header } from 'semantic-ui-react';
 // import serverURL from './serverURL.js';
-import VoteContainer from '../VoteContainer';
+import VoteContainer from './VoteContainer';
+import RoundContainer from './RoundContainer';
 
 
 class GameCurrent extends Component {
@@ -9,7 +10,8 @@ class GameCurrent extends Component {
         super();
         this.state = {
         	currentGame: [],
-        	chatState: '' 			// Hidden or shown
+        	chatState: '', 			// Hidden or shown
+          session: null
         }
     }
 
@@ -31,7 +33,10 @@ class GameCurrent extends Component {
 
     	parsedResponse.data.forEach(game => {
 			if (game.status === 'Current') {							// Find the ONE game that is current and set state
-		    	this.setState({currentGame: game})
+		    	this.setState({
+            currentGame: game,
+            session: parsedResponse.session
+          })
 			}
     	});
 
@@ -56,7 +61,9 @@ class GameCurrent extends Component {
 	            <Segment>
 	        		<Header as="h3">{this.state.currentGame.title}</Header>
 	        		<Header as="h4">{this.state.currentGame.description}</Header>
-	        		<Segment><VoteContainer /></Segment>
+	        		<Segment>This is where the Chat, Vote, and Intermission/End Components will live.</Segment>
+              <RoundContainer game={this.state.currentGame}/>
+              <VoteContainer session={this.state.session}></VoteContainer>
 	            </Segment>
             </div>
             
