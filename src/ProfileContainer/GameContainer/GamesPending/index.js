@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Segment, Header, Button } from 'semantic-ui-react';
+// import serverURL from './serverURL.js';
 
 
 class GamesPending extends Component {

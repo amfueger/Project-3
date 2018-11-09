@@ -9,6 +9,7 @@ import NavHeaderLogged from './NavHeaderLogged';
 import Register from './Register';
 // import Repos from './Repos';
 import Login from './Login';
+import serverURL from './serverURL.js';
 
 // -------------------- Import Modules -------------------- //
 // import { Route, Switch } from 'react-router-dom';
@@ -45,8 +46,8 @@ class App extends Component {
   }
 
 
-  onUsernameSubmitted = (username) => {
-    fetch('http://localhost:9000/chatusers', {
+  onUsernameSubmitted = async (username) => {
+    await fetch(serverURL + 'chatusers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -5,6 +5,8 @@ import MessageList from '../MessageList';
 import NewRoomForm from '../NewRoomForm';
 //import SendComment from './SendComment';
 import { instanceLocator, testToken, username, roomId } from '../config';
+import serverURL from './serverURL.js';
+
 
 class RoomContainer extends Component{
 	constructor(){

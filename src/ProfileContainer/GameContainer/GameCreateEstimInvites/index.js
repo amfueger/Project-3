@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Label, Segment, Divider } from 'semantic-ui-react';
+// import serverURL from '../serverURL.js';
 
 
 class GameCreateEstimInvites extends Component {

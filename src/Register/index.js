@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Segment, Header, Message } from 'semantic-ui-react';
 // import gitHubStuff from '../gitHubStuff.js';
+// import serverURL from './serverURL.js';
 
 
 class Register extends Component {

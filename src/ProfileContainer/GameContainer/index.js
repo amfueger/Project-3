@@ -10,72 +10,142 @@ import GameCreateFinal from './GameCreateFinal';
 import GameCreateUserStory from './GameCreateUserStory';
 import GameCreateEstimInvites from './GameCreateEstimInvites';
 import { Header } from 'semantic-ui-react';
+import chatKeys from './config.js';
+import Chatkit from '@pusher/chatkit';
+// import serverURL from '.../serverURL.js';
+
 
 
 class GameContainer extends Component {
 
-	constructor(){
+  constructor(){
     super();
 
     this.state = {
-    	pageShowing: 'Choose',
-    	game : {
-	    	title: '',
-	    	description: '',
+      pageShowing: 'Choose',
+      game : {
+        title: '',
+        description: '',
         scrumMaster: [],
-	    	estimators: [],
-        status: 'Pending'
-	    }
+        estimators: [],
+        status: 'Pending',
+        roomId: '',
+        currentUser: ''
+      }
     }
     // this.updateGamePageShowing = this.updateGamePageShowing.bind(this);
-	}
+  }
 
   updateGamePageShowing = async (pageShowing) => {
       this.setState({pageShowing: pageShowing});
   }
 
 
-	updateUserStory = async (userStory, e) => {
-		e.preventDefault();
+  updateUserStory = async (userStory, e) => {
+    e.preventDefault();
 
-		try {
-	    this.setState({
-	    	game: {
-	    		title: userStory.title,
-	    		description: userStory.description
-	    	}
-	    });
+    try {
+      this.setState({
+        game: {
+          title: userStory.title,
+          description: userStory.description
+        }
+      });
 
-		} catch(err){
-			console.error(`Error in updateUserStory() GameContainer`, err);
-		}
-	}
+    } catch(err){
+      console.error(`Error in updateUserStory() GameContainer`, err);
+    }
+  }
 
 
-	updateEstimators = async (data, e) => {
-		e.preventDefault();
+  updateEstimators = async (data, e) => {
+    e.preventDefault();
 
-		try {
+    try {
 
-			console.log(`'data' in updateEstimators() in GameContainer: `, data);
+    console.log(`'data' in updateEstimators() in GameContainer: `, data);
 
-	    this.setState({
-	    	game: {
-	    		title: this.state.game.title,
-	    		description: this.state.game.description,
-	    		estimators: data.estimators,
+    const chatManager = await new Chatkit.ChatManager({
+      instanceLocator: chatKeys.instanceLocator,
+      userId: data.scrumMaster.username,
+      tokenProvider: new Chatkit.TokenProvider({
+        url: chatKeys.testToken
+      })
+    });
+
+    console.log(`chatManager from updateEstimators(): `, chatManager);
+
+    await chatManager.connect()
+    .then(chatManagerResponse => {
+      console.log(`currentUser inside Chatmanager updateEstimators(): `, chatManagerResponse);
+
+      this.setState({
+        game: {
+          title: this.state.game.title,
+          description: this.state.game.description,
+          estimators: data.estimators,
           scrumMaster: data.scrumMaster,
-          status: 'Pending'
-	    	}
-	    });
+          status: 'Pending',
+          currentUser: chatManagerResponse
 
-		} catch(err){
-			console.error(`Error in updateEstimators() GameContainer`, err);
-		}
-
-	}
+        }
+      });
+    })
+    .catch(err => console.log('err on connecting', err));
 
 
+
+    } catch(err){
+      console.error(`Error in updateEstimators() GameContainer`, err);
+    }
+  }
+
+  // getRooms = () => {
+  //   this.currentUser.getJoinableRooms()
+  //   .then(joinableRooms => {
+  //     this.setState({
+  //       joinableRooms,
+  //       joinedRooms: this.currentUser.rooms
+  //     })
+  //   }).catch(err => console.log(err, 'error on joinable rooms'));
+  // }
+
+
+  // subscribeToRoom = (roomId) => {
+  //   this.setState({
+  //     messages: []
+  //   })
+    
+  //   this.currentUser.subscribeToRoom({
+  //     roomId: roomId,
+  //     messageLimit: 100,
+  //     hooks: {
+  //       onNewMessage: message => {
+  //         console.log(message.text);
+  //         this.setState({
+  //           messages: [...this.state.messages, message]
+  //         })
+  //       }
+  //     }
+  //   })
+  //   .then(room => {
+  //     this.setState({
+  //       roomId: room.id
+  //     })
+  //     this.getRooms()
+  //   }).catch(error => console.log(error, 'error subscribing to room'));
+  // }
+
+
+  // createRoom = (name) => {
+  //   this.currentUser.createRoom({
+  //     name
+  //   })
+  //   //.then(room => this.subscribeToRoom(room.id))
+  //   //the name of the room above can go into the game creation form. The code above that's commented ensures that once the room is created, we go to it. It will work because the form for game creation will include a spot for room creation, and the button will submit change for both game creation AND making the chat box. 
+  // }
+
+  
   addGame = async () => {
 
     try {
@@ -150,7 +220,7 @@ class GameContainer extends Component {
     console.log(`GameContainer.js pageShowing: `, this.state.pageShowing);
       return(
         <fieldset>
-      	<legend as="h1">Games</legend>
+        <legend as="h1">Games</legend>
         
         {this.state.pageShowing === "Choose" ? 
           <div>
@@ -223,12 +293,12 @@ class GameContainer extends Component {
           </div> 
           : null}
 
-        </fieldset>	
+        </fieldset> 
       )
     }
 }
 export default GameContainer;
-		        // <Route exact path="/new" component={ GameCreate }/>
-		        // <Route exact path="/current" component={ GameCurrent }/>
-	    		// <Route exact path="/pending" component={ ProfileContainer }/>
-		      	// <Route exact path="/past" component={ GameContainer }/>
+            // <Route exact path="/new" component={ GameCreate }/>
+            // <Route exact path="/current" component={ GameCurrent }/>
+          // <Route exact path="/pending" component={ ProfileContainer }/>
+            // <Route exact path="/past" component={ GameContainer }/>

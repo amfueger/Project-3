@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import { Header, Menu } from 'semantic-ui-react';
+import serverURL from '../serverURL.js';
 
 class NavHeaderLogged extends Component {
 
 	handleLogout = async () => {
 	    try {
-	      const logoutRequest = await fetch('http://localhost:9000/auth/logout', {
+	      const logoutRequest = await fetch(serverURL + 'auth/logout', {
 	        credentials: 'include'
 	      });
 
 	      const parsedResponse = await logoutRequest.json();
 
-	      await console.log(`parsedResponse from Logout: `, parsedResponse);
+	      console.log(`parsedResponse from Logout: `, parsedResponse);
 
-	      await this.props.updatePageShowing('Login');
-
-	      // return parsedResponse;
+	      this.props.updatePageShowing('Login');
 
 	    } catch(err){
 	        console.log('Error: ', err);
