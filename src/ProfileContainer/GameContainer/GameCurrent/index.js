@@ -42,7 +42,7 @@ class GameCurrent extends Component {
   }
 
 	// -----v----- This is where the ChatBox should be rendered/hidden -----v----- //
-
+  
     render(){
       	console.log(`this.state in GameCurrent: `, this.state);
     	// const currentGame = this.state.currentGame.map(game => {
@@ -56,7 +56,7 @@ class GameCurrent extends Component {
 	            <Segment>
 	        		<Header as="h3">{this.state.currentGame.title}</Header>
 	        		<Header as="h4">{this.state.currentGame.description}</Header>
-	        		<Segment>This is where the Chat, Vote, and Intermission/End Components will live.</Segment>
+	        		<Segment><VoteContainer /></Segment>
 	            </Segment>
             </div>
             
