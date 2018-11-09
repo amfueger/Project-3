@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import { Table, Header } from 'semantic-ui-react';
 
 const RoundContainer = (props) => {
+
+// We dont want to do this logic with front end data.
+// We want to fetch the game from the database and do the math from there
+
+
+
+
+
+
 	const rounds = props.game.rounds.map((round,i) => {
 		return(
 				<Table.HeaderCell key={i}>{round} 

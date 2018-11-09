@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Segment, Header } from 'semantic-ui-react';
 // import serverURL from './serverURL.js';
 import VoteContainer from './VoteContainer';
+import RoundContainer from './RoundContainer';
 
 
 class GameCurrent extends Component {
@@ -61,7 +62,9 @@ class GameCurrent extends Component {
 	        		<Header as="h3">{this.state.currentGame.title}</Header>
 	        		<Header as="h4">{this.state.currentGame.description}</Header>
 	        		<Segment>This is where the Chat, Vote, and Intermission/End Components will live.</Segment>
-              <VoteContainer session={this.state.session}></VoteContainer>
+                <VoteContainer game={this.state.currentGame}></VoteContainer>
+                <RoundContainer game={this.state.currentGame}></RoundContainer>
+
 	            </Segment>
             </div>
             
