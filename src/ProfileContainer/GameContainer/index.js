@@ -10,8 +10,10 @@ import GameCreateFinal from './GameCreateFinal';
 import GameCreateUserStory from './GameCreateUserStory';
 import GameCreateEstimInvites from './GameCreateEstimInvites';
 import { Header } from 'semantic-ui-react';
+
 import chatKeys from './config.js';
 import Chatkit from '@pusher/chatkit';
+
 // import serverURL from '.../serverURL.js';
 
 
@@ -26,9 +28,9 @@ class GameContainer extends Component {
       game : {
         title: '',
         description: '',
-        scrumMaster: [],
+        scrumMaster: null,
         estimators: [],
-        status: 'Pending',
+        status: '',
         roomId: '',
         currentUser: ''
       }
@@ -76,8 +78,8 @@ class GameContainer extends Component {
     console.log(`chatManager from updateEstimators(): `, chatManager);
 
     await chatManager.connect()
-    .then(currentUser => {
-      console.log(`currentUser inside Chatmanager updateEstimators(): `, currentUser);
+    .then(chatManagerResponse => {
+      console.log(`chatManagerResponse inside Chatmanager updateEstimators(): `, chatManagerResponse);
 
       this.setState({
         game: {
@@ -86,8 +88,7 @@ class GameContainer extends Component {
           estimators: data.estimators,
           scrumMaster: data.scrumMaster,
           status: 'Pending',
-          currentUser: currentUser
-
+          currentUser: chatManagerResponse
         }
       });
     })
@@ -136,14 +137,13 @@ class GameContainer extends Component {
   //   }).catch(error => console.log(error, 'error subscribing to room'));
   // }
 
-
-  // createRoom = (name) => {
-  //   this.currentUser.createRoom({
-  //     name
-  //   })
-  //   //.then(room => this.subscribeToRoom(room.id))
-  //   //the name of the room above can go into the game creation form. The code above that's commented ensures that once the room is created, we go to it. It will work because the form for game creation will include a spot for room creation, and the button will submit change for both game creation AND making the chat box. 
-  // }
+  createRoom = () => {
+    this.game.currentUser.createRoom({
+      roomId: this.state.game.title
+    })
+    .then(room => this.subscribeToRoom(room.id))
+    //the name of the room above can go into the game creation form. The code above that's commented ensures that once the room is created, we go to it. It will work because the form for game creation will include a spot for room creation, and the button will submit change for both game creation AND making the chat box. 
+  }
 
   
   addGame = async () => {
@@ -174,16 +174,24 @@ class GameContainer extends Component {
   }
 
 
-  updateGameStatus = async (game, status) => {
+  updateGameStatus = async (game, newStatus) => {
     // e.preventDefault();
 
+
     try {
+      console.log(`game: `, game);
+      console.log(`newStatus: `, newStatus);
 
       const updateGameState = await fetch('http://localhost:9000/games/' + game._id, {
         method: 'PUT',
         body: JSON.stringify({
-          ...game,
-          status: status
+            title: game.title,
+            description: game.description,
+            scrumMaster: game.scrumMaster,
+            estimators: game.estimators,
+            roomId: game.roomId,
+            status: newStatus
+            // currentUser: game.currentUser
         }),
         headers: {
           'Content-Type': 'application/json'

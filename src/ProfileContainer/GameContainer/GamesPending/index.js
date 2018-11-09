@@ -30,7 +30,7 @@ class GamesPending extends Component {
                     <Segment key={game._id}>
                         <Header as="h3">{game.title}</Header>
                         <p>{game.description}</p>
-                        <Button onClick={() => this.props.updateGameStatus(game)}>Join</Button>
+                        <Button onClick={() => this.props.updateGameStatus(game, "Current")}>Join</Button>
                     </Segment>
                 ) 
             } else {
@@ -53,7 +53,11 @@ class GamesPending extends Component {
                 <Segment key={game._id}>
                     <Header as="h3">{game.title}</Header>
                     <p>{game.description}</p>
-                    <Button onClick={() => this.props.updateGameStatus(game, "Current")}>Join</Button>
+                    <Button onClick={() => {
+                                            console.log(`HERE`);
+                                            this.props.updateGameStatus(game, "Current");
+                                        }
+                    }>Join</Button>
                 </Segment>
             ) 
         })
