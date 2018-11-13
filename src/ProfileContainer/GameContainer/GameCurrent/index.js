@@ -44,5 +44,25 @@ class GameCurrent extends Component {
       </div>
     )
   }
+
+	// -----v----- This is where the ChatBox should be rendered/hidden -----v----- //
+  
+    render(){
+      	console.log(`this.state in GameCurrent: `, this.state);
+
+        return(
+        	<div>
+	            <Header as="h1">Current Game</Header>
+	            <Segment>
+	        		<Header as="h3">{this.state.currentGame.title}</Header>
+	        		<Header as="h4">{this.state.currentGame.description}</Header>
+	        		<Segment>This is where the Chat, Vote, and Intermission/End Components will live.</Segment>
+                <VoteContainer game={this.state.currentGame}></VoteContainer>
+                <RoundContainer game={this.state.currentGame}></RoundContainer>
+	            </Segment>
+            </div>
+            
+        )
+    }
 }
 export default GameCurrent;
