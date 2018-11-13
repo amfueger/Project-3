@@ -13,15 +13,21 @@ class Login extends Component {
 		}
 	}
 
+  // ---------- 'Invalid Username/Password' Message ---------- //
+
 	messageHidden = () => this.setState({
 		hidden: !this.state.hidden
 	})
+
+  // ---------- Form Handling ---------- //
 
 	handleChange = (e) => {
 		this.setState({
 			[e.currentTarget.name]: e.currentTarget.value
 		})
 	}
+
+  // ------------------------------ LOGIN / POST REQUEST ------------------------------ //
 
 	handleSubmit = async (e) => {
 		e.preventDefault();
@@ -38,9 +44,9 @@ class Login extends Component {
 
 		console.log(`<Login> handleSubmit() parsedResponse`, parsedResponse);
 
-		if(parsedResponse.data === 'Login Successful'){									// If login success
+		if(parsedResponse.data === 'Login Successful'){										// If login success
 
-			this.props.handleRegisterLogin(														// Pass data up to App.js
+			this.props.handleRegisterLogin(													// Pass data up to App.js
 				parsedResponse.session.username, 
 				parsedResponse.session.userId, 
 				parsedResponse.session.logged

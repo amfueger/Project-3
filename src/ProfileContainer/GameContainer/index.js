@@ -17,7 +17,6 @@ import Chatkit from '@pusher/chatkit';
 // import serverURL from '.../serverURL.js';
 
 
-
 class GameContainer extends Component {
 
   constructor(){
@@ -25,7 +24,9 @@ class GameContainer extends Component {
 
     this.state = {
       pageShowing: 'Choose',
-      game : {
+      ongoingGame: false,
+      currentGame: null,
+      game: {
         title: '',
         description: '',
         scrumMaster: null,
@@ -33,15 +34,59 @@ class GameContainer extends Component {
         status: '',
         roomId: '',
         currentUser: ''
-      }
+      },
+      vote: {
+        voter: '',
+        choice: ''
+      },
+      votesLeft: null,
+      disabled: false
     }
-    // this.updateGamePageShowing = this.updateGamePageShowing.bind(this);
   }
+
 
   updateGamePageShowing = async (pageShowing) => {
       this.setState({pageShowing: pageShowing});
   }
 
+
+  // ------------------------------ Handle Vote Change ------------------------------ //
+
+  handleChange = (e) => {
+    this.setState({
+      vote: {
+        voter: this.props.appState.userId,
+        choice: e.currentTarget.value
+      }
+    })
+  }
+
+
+  // ------------------------------ MAKE ALL USERS AVAILABLE ------------------------------ //
+
+  getUsers = async () => {
+    const estimators = await fetch('http://localhost:9000/users/', {    // Fetch all users
+      credentials: 'include'
+    });     
+    const estimatorsParsedJSON = await estimators.json();
+    console.log(`estimatorsParsedJSON: `, estimatorsParsedJSON);
+    return estimatorsParsedJSON;
+  }
+
+
+  // ------------------------------ MAKE ALL GAMES AVAILABLE ------------------------------ //
+  
+  getGames = async () => {
+    const games = await fetch('http://localhost:9000/games/', {    // Fetch all games
+      credentials: 'include'
+    });     
+    const gamesParsedJSON = await games.json();
+    console.log(`gamesParsedJSON: `, gamesParsedJSON);
+    return gamesParsedJSON;
+  }
+
+
+  // ------------------------------ UPDATE GameToBeCreated USER STORY ------------------------------ //
 
   updateUserStory = async (userStory, e) => {
     e.preventDefault();
@@ -60,27 +105,28 @@ class GameContainer extends Component {
   }
 
 
-  updateEstimators = async (data, e) => {
-    e.preventDefault();
+  // ------------------------------ UPDATE GameToBeCreated ESTIMATORS ------------------------------ //
+
+  updateEstimators = async (data, e) => {     // The last time before game creation that the GameContainer state is updated
+    e.preventDefault();                       // It will be GameContainer's state's data that will be used to create the new game
 
     try {
 
-    console.log(`'data' in updateEstimators() in GameContainer: `, data);
+      console.log(`'data' in updateEstimators() in GameContainer: `, data);
 
-    const chatManager = await new Chatkit.ChatManager({
-      instanceLocator: chatKeys.instanceLocator,
-      userId: data.scrumMaster.username,
-      tokenProvider: new Chatkit.TokenProvider({
-        url: chatKeys.testToken
-      })
-    });
+      const chatManager = await new Chatkit.ChatManager({
+        instanceLocator: chatKeys.instanceLocator,
+        userId: data.scrumMaster.username,
+        tokenProvider: new Chatkit.TokenProvider({
+          url: chatKeys.testToken
+        })
+      });
 
-    console.log(`chatManager from updateEstimators(): `, chatManager);
+      console.log(`chatManager from updateEstimators(): `, chatManager);
 
-    await chatManager.connect()
+      await chatManager.connect()
     .then(chatManagerResponse => {
       console.log(`chatManagerResponse inside Chatmanager updateEstimators(): `, chatManagerResponse);
-
 
       this.setState({
         game: {
@@ -88,20 +134,145 @@ class GameContainer extends Component {
           description: this.state.game.description,
           estimators: data.estimators,
           scrumMaster: data.scrumMaster,
-          status: 'Pending',
+          status: 'Pending',                    // Game status set to 'Pending', ready for creation
           currentUser: chatManagerResponse
-
         }
       });
     })
     .catch(err => console.log('err on connecting', err));
 
-
-
     } catch(err){
       console.error(`Error in updateEstimators() GameContainer`, err);
     }
   }
+
+
+  // ------------------------------ UPDATE GAME STATUS ------------------------------ //
+
+  updateGameStatus = async (game, newStatus) => {       // Game Status to be updated from 'Pending' to 'Current' to 'Past' when game is JOINED/OVER
+    try {
+      console.log(`game: `, game);
+      console.log(`newStatus: `, newStatus);
+
+      const updateGameState = await fetch('http://localhost:9000/games/' + game._id, {
+        method: 'PUT',
+        body: JSON.stringify({
+            title: game.title,
+            description: game.description,
+            scrumMaster: game.scrumMaster,
+            estimators: game.estimators,
+            roomId: game.roomId,
+            status: newStatus
+            // currentUser: game.currentUser
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const updateGameStateParsed = await updateGameState.json();
+
+      console.log(`updateGameStateParsed: `, updateGameStateParsed);
+
+      if (newStatus === "Current") {
+        this.updateGamePageShowing("GameCurrent");
+        this.setState({ongoingGame: true});
+      } else if (game.status === "Past") {
+        this.updateGamePageShowing("GamesPast");
+        this.setState({ongoingGame: false});
+      } else {
+        this.updateGamePageShowing("Choose");
+      }
+
+      console.log(`updateGameStateParsed -> parsed edit: `, updateGameStateParsed);
+
+    } catch(err){
+      console.log(err)
+    }
+  }
+
+
+  // ------------------------------ CREATE GAME FROM STATE ------------------------------ //
+  
+  addGame = async () => {
+    try {
+
+      console.log(`this.state in addGame() GameContainer before fetch: `, this.state);
+
+      const createdGame = await fetch('http://localhost:9000/games/', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(this.state.game),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const parsedResponse = await createdGame.json();
+
+      console.log(`parsedResponse from addGame: `, parsedResponse);
+
+      this.updateGamePageShowing('Choose');
+
+    } catch(err){
+        console.log('error')
+        console.log(err)
+    }
+  }
+
+
+  // ------------------------------ CURRENTGAME SUBMIT VOTE ------------------------------ //
+
+  handleSubmitVote = async (e) => {
+    e.preventDefault();
+
+    console.log(`this.state in handleSubmitVote: `, this.state);
+
+    try {
+      // Make a post request to server to create vote
+      const createVoteResponse = await fetch('http://localhost:9000/votes', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify({
+          voter:   this.state.vote.voter,
+          choice:  this.state.vote.choice,
+          game:    this.state.currentGame,
+          session: this.state.session
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const parsedResponse = await createVoteResponse.json();
+      console.log(`parsedResponse from handleSubmitVote() in GameContainer: `, parsedResponse);
+      this.votesLeftCalc();
+
+      this.setState({
+        disabled: !this.state.disabled,
+      });
+
+    } catch(err){
+      console.error(`Error: `, err);
+    }
+  }
+
+
+  // ------------------------------ CALCULATE VOTES LEFT ------------------------------ //
+
+  votesLeftCalc = async () => {
+    try {
+
+      if (this.state.currentGame.rounds.length !== 0) {
+        let votesLeft = ((this.state.currentGame.estimators.length) - (this.state.currentGame.rounds[this.state.currentGame.rounds.length-1].votes.length));
+        console.log(`votesLeft after vote: `, votesLeft);
+        this.setState({votesLeft: votesLeft});
+      }
+
+    } catch(err){
+      console.log(`Error in votesLeft: \n`, err);
+    }
+  }  // ------------------------------ GET CHAT ROOMS AND SUBSCRIBE TO ONE ------------------------------ //
 
   // getRooms = () => {
   //   this.currentUser.getJoinableRooms()
@@ -139,6 +310,8 @@ class GameContainer extends Component {
   //   }).catch(error => console.log(error, 'error subscribing to room'));
   // }
 
+  // ------------------------------ CREATE CHAT ROOM ------------------------------ //
+
   createRoom = () => {
     this.game.currentUser.createRoom({
       roomId: this.state.game.title
@@ -147,95 +320,42 @@ class GameContainer extends Component {
     //the name of the room above can go into the game creation form. The code above that's commented ensures that once the room is created, we go to it. It will work because the form for game creation will include a spot for room creation, and the button will submit change for both game creation AND making the chat box. 
   }
 
-  
-  addGame = async () => {
 
-    try {
+  componentDidMount(){
 
-      console.log(`this.state in addGame() GameContainer before fetch: `, this.state);
+    this.getGames().then(parsedResponse => { 
 
-      const createdGame = await fetch('http://localhost:9000/games/', {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify(this.state.game),
-        headers: {
-          'Content-Type': 'application/json'
+      parsedResponse.data.forEach(game => {
+
+        if (game.status === 'Current') {              // Find the ONE game that is current and set state
+          // IMPORTANT
+          // IMPORTANT
+          // IMPORTANT
+          // IMPORTANT
+
+          // && game.scrumMaster._id === parsedResponse.session.userId
+          this.setState({
+            currentGame: game,
+            session: parsedResponse.session
+          })
         }
       });
-
-      const parsedResponse = await createdGame.json();
-
-      console.log(`parsedResponse from addGame: `, parsedResponse);
-
-      this.updateGamePageShowing('Choose');
-
-    } catch(err){
-        console.log('error')
-        console.log(err)
-    }
+    }).catch((err) => {
+      console.error(`Error: `, err);
+    })     
   }
-
-
-  updateGameStatus = async (game, newStatus) => {
-    // e.preventDefault();
-
-
-    try {
-      console.log(`game: `, game);
-      console.log(`newStatus: `, newStatus);
-
-      const updateGameState = await fetch('http://localhost:9000/games/' + game._id, {
-        method: 'PUT',
-        body: JSON.stringify({
-            title: game.title,
-            description: game.description,
-            scrumMaster: game.scrumMaster,
-            estimators: game.estimators,
-            roomId: game.roomId,
-            status: newStatus
-            // currentUser: game.currentUser
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      const updateGameStateParsed = await updateGameState.json();
-
-      console.log(`updateGameStateParsed: `, updateGameStateParsed);
-
-      // this.setState({
-      //   showEditModal: false,
-      //   movies: newMovieArrayWithEdit
-      // });
-      if (game.status === "Current") {
-        this.updateGamePageShowing("GameCurrent");
-      } else if (game.status === "Past") {
-        this.updateGamePageShowing("GamesPast");
-      } else {
-        this.updateGamePageShowing("Choose");
-      }
-
-      console.log(`updateGameStateParsed -> parsed edit: `, updateGameStateParsed);
-
-    } catch(err){
-      console.log(err)
-    }
-    
-
-  };
-
 
     render(){
     console.log(`GameContainer.js pageShowing: `, this.state.pageShowing);
+    console.log(`this.state in GameContainer: `, this.state);
+
       return(
-        <fieldset>
-        <legend as="h1">Games</legend>
-        
+        <div>
         {this.state.pageShowing === "Choose" ? 
           <div>
             <Choose 
             updateGamePageShowing={this.updateGamePageShowing} 
+            ongoingGame={this.state.ongoingGame}
             />
           </div> 
           : null}
@@ -244,7 +364,8 @@ class GameContainer extends Component {
           <div>
             <GameCreateUserStory 
             updateGamePageShowing={this.updateGamePageShowing} 
-            updateUserStory={this.updateUserStory}/>
+            updateUserStory={this.updateUserStory}
+            user={this.state.game.scrumMaster}/>
           </div> 
           : null}
 
@@ -267,7 +388,8 @@ class GameContainer extends Component {
             <Header as="h2">Estimator Invites</Header>
             <GameCreateEstimInvites 
             updateGamePageShowing={this.updateGamePageShowing} 
-            updateEstimators={this.updateEstimators} 
+            updateEstimators={this.updateEstimators}
+            getUsers={this.getUsers} 
             appState={this.props.appState}/>
           </div> 
           : null}
@@ -291,7 +413,16 @@ class GameContainer extends Component {
 
         {this.state.pageShowing === "GameCurrent" ? 
           <div>
-            <GameCurrent updateGamePageShowing={this.updateGamePageShowing} />
+            <GameCurrent 
+              updateGamePageShowing={this.updateGamePageShowing} 
+              handleSubmitVote={this.handleSubmitVote}
+              handleChange={this.handleChange}
+              votesLeft={this.state.votesLeft}
+              getGames={this.getGames}
+              vote={this.state.vote}
+              currentGame={this.state.currentGame}
+              disabled={this.state.disabled}
+              />
           </div> 
           : null}
 
@@ -299,11 +430,12 @@ class GameContainer extends Component {
           <div>
             <GamesPending 
               updateGamePageShowing={this.updateGamePageShowing}
-              updateGameStatus={this.updateGameStatus} />
+              updateGameStatus={this.updateGameStatus}
+              getGames={this.getGames} 
+               />
           </div> 
           : null}
-
-        </fieldset> 
+          </div>
       )
     }
 }

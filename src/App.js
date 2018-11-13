@@ -7,7 +7,7 @@ import NavHeaderNotLogged from './NavHeaderNotLogged';
 import ProfileContainer from './ProfileContainer';
 import NavHeaderLogged from './NavHeaderLogged';
 import Register from './Register';
-// import Repos from './Repos';
+// import Repos from './ProfileContainer/GameContainer/Repos';
 import Login from './Login';
 import serverURL from './serverURL.js';
 
@@ -127,6 +127,13 @@ class App extends Component {
     );
   }
 }
+        // {this.state.pageShowing === "Repos" ? 
+        //   <div>
+        //     <Repos 
+        //     updatePageShowing={this.updatePageShowing} 
+        //     appState={this.state}/>
+        //   </div> 
+        //   : null} 
 
 
 export default App;

@@ -3,9 +3,9 @@ import { Form, Button, Label, Segment, Divider } from 'semantic-ui-react';
 // import serverURL from '../serverURL.js';
 
 
-class GameCreateEstimInvites extends Component {
-  constructor(){
-    super();
+class GameCreateEstimInvites extends Component {             // This Component lists all potential estimators 
+  constructor(){                                             // i.e. everybody from ghe same company, excluding scrumMaster themselves
+    super();                                                 // scrumMaster has option of deleting estimators they do not want participating
 
     this.state = {
       scrumMaster: null,
@@ -21,12 +21,10 @@ class GameCreateEstimInvites extends Component {
   })
 
 
+  // ------------------------------ DELETE UNWANTED ESTIMATORS ------------------------------ //
+
   deleteEstimator = (e) => {
     e.preventDefault();
-
-    console.log(`e.currentTarget.value from deleteEstimator(): `, e.currentTarget.value);
-
-
     let estimatorsArray = [];
 
     this.state.estimators.forEach((estimator, i) => {
@@ -39,25 +37,14 @@ class GameCreateEstimInvites extends Component {
       scrumMaster: this.state.scrumMaster,
       estimators: estimatorsArray
     });
-
-    console.log(`this.state from deleteEstimator(): `, this.state);
-
   }
 
 
-  getUsers = async () => {
-    const estimators = await fetch('http://localhost:9000/users/', {    // Fetch all users
-      credentials: 'include'
-    }); 	  
-    const estimatorsParsedJSON = await estimators.json();
-    console.log(`estimatorsParsedJSON: `, estimatorsParsedJSON);
-    return estimatorsParsedJSON;
-  };
-
+  // ------------------------------ GET ESTIMATORS ON INITAL LOAD ------------------------------ //
 
   componentDidMount(){
     
-    this.getUsers().then(parsedResponse => {                            // Get ALL potential estimators, on the intial load of the APP
+    this.props.getUsers().then(parsedResponse => {                      
 
     	let estimatorsArray = [];																         	// Make array that will hold estimators from same company minus logged user
       let scrumMasterGet = null;
@@ -65,8 +52,6 @@ class GameCreateEstimInvites extends Component {
     	parsedResponse.data.forEach(elem => {
         if (this.props.appState.username === elem.username) {
           scrumMasterGet = elem;                                        // Grab scrumMaster which will provide company name
-          console.log(`scrumMasterGet: `, scrumMasterGet);
-          console.log(`elem: `, elem);
         }
     	});
 
@@ -81,12 +66,12 @@ class GameCreateEstimInvites extends Component {
         scrumMaster: scrumMasterGet,
         estimators: estimatorsArray
       })
-      console.log(`this.state from componentDidMount() GameCreateEstimInvites: `, this.state);	
 
     }).catch((err) => {
       console.log(err);
     })    
-  };
+  }
+
 
   render(){
 

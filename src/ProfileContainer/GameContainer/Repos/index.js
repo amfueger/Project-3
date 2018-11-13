@@ -27,8 +27,9 @@ class Repos extends Component {
 
   getRepos = async () => {
     try {
-      const repos   = await fetch('https://api.github.com/users/' + this.state.username + '/repos');
+      const repos   = await fetch('https://api.github.com/users/charlotteprevost/repos');
       const reposJson = await repos.json();
+      console.log(reposJson);
       return reposJson;
 
     } catch(err){
@@ -39,7 +40,7 @@ class Repos extends Component {
 
   componentDidMount(){
 
-    this.getRepos(this.state.username).then(data => {
+    this.getRepos().then(data => {
 
       // console.log(`repos data from componentDidMount: `, data);
       this.setState({repos: data});
@@ -51,11 +52,11 @@ class Repos extends Component {
   }
   render(){
 
-    // let isArr = Array.isArray(this.props.allRepos);
-    // console.log(`this.props.allRepos isArr: `, isArr);
-    // if (allRepos !== null && allRepos !== undefined) {
-    //   let allRepos = Array.from(this.props.allRepos);
-    //   console.log(`allRepos: `, allRepos);
+    // let isArr = Array.isArray(this.props.this.state.repos);
+    // console.log(`this.props.this.state.repos isArr: `, isArr);
+    // if (this.state.repos !== null && this.state.repos !== undefined) {
+    //   let allRepos = Array.from(this.state.repos);
+    //   console.log(`this.state.repos: `, this.state.repos);
 
     //   let gitHubUserReposList = allRepos.map((repo, i) => {
     //     return (
@@ -68,22 +69,22 @@ class Repos extends Component {
 
     // console.log(this.state);
 
-    /*  <div>
-        <h2>GitHub User Repos List</h2>
-        {!this.state.repos ? 
-        <Dropdown 
-          placeholder='Select Repo' 
-          fluid selection 
-          options={gitHubUserReposList} 
-          text={this.state.repoName}/>
-        : <p>You Have No Repos</p>}
+    //  <div>
+    //     <h2>GitHub User Repos List</h2>
+    //     {!this.state.repos ? 
+    //     <Dropdown 
+    //       placeholder='Select Repo' 
+    //       fluid selection 
+    //       options={gitHubUserReposList} 
+    //       text={this.state.repoName}/>
+    //     : <p>You Have No Repos</p>}
           
-          {this.state.repoSelected ? 
-            <RepoIssues 
-              repoName={this.state.repoName} 
-              username={this.props.username}/> 
-              : <p>Select a Repo above to view issues</p>}
-      </div>*/
+    //       {this.state.repoSelected ? 
+    //         <RepoIssues 
+    //           repoName={this.state.repoName} 
+    //           username={this.props.username}/> 
+    //           : <p>Select a Repo above to view issues</p>}
+    //   </div>
 
     return (
       <div>Repos</div>

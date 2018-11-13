@@ -16,15 +16,21 @@ class Register extends Component {
 		}
 	}
 
+  // ---------- 'Username Already taken' Message ---------- //
+
 	messageHidden = () => this.setState({
 		hidden: !this.state.hidden
 	})
+
+  // ---------- Form Handling ---------- //
 
 	handleChange = (e) => {
 		this.setState({
 			[e.currentTarget.name]: e.currentTarget.value
 		})
 	}
+
+  // ------------------------------ REGISTER / POST REQUEST ------------------------------ //
 
 	handleSubmit = async (e) => {
 		console.log('e, before prevent default: ', e);
@@ -46,13 +52,11 @@ class Register extends Component {
 		if (parsedResponse.data === 'Register Successful') {								// If register success
 			this.props.handleRegisterLogin(														// Pass data up to App.js
 				parsedResponse.session.username, 
-				// parsedResponse.session.company, 
 				parsedResponse.session.userId, 
 				parsedResponse.session.logged
 			);		
 			
 			this.props.updatePageShowing("ProfileContainer");								// Change page showing to the user's profile
-			// this.props.history.push('/profile');
 		} else {
 			this.messageHidden();
 		}

@@ -7,68 +7,42 @@ import RoundContainer from './RoundContainer';
 
 class GameCurrent extends Component {
   constructor(){
-        super();
-        this.state = {
-        	currentGame: [],
-        	chatState: '', 			// Hidden or shown
-          session: null
-        }
+    super();
+    this.state = {
+    	currentGame: null,
+    	chatState: '', 			// Hidden or shown
+      session: null,
     }
-
-  getGames = async () => {
-    const games = await fetch('http://localhost:9000/games', {    		// Fetch all games
-	      credentials: 'include'
-	    }); 
-
-    const gamesParsedJSON = await games.json();
-    
-    console.log(`gamesParsedJSON from GamesPending: `, gamesParsedJSON);
-    return gamesParsedJSON;
-  };
-
-  componentDidMount(){
-    this.getGames().then(parsedResponse => { 
-
-    	console.log(`parsedResponse in componentDidMount GameCurrent: `, parsedResponse);
-
-    	parsedResponse.data.forEach(game => {
-			if (game.status === 'Current') {							// Find the ONE game that is current and set state
-		    	this.setState({
-            currentGame: game,
-            session: parsedResponse.session
-          })
-			}
-    	});
-
-
-    }).catch((err) => {
-      console.error(`Error: `, err);
-    })     
   }
 
-	// -----v----- This is where the ChatBox should be rendered/hidden -----v----- //
 
-    render(){
-      	console.log(`this.state in GameCurrent: `, this.state);
-    	// const currentGame = this.state.currentGame.map(game => {
-    	// 	return (
-    	// 	)
-    	// });
+  // -----v----- This is where the ChatBox should be rendered/hidden -----v----- //
 
-        return(
-        	<div>
-	            <Header as="h1">Current Game</Header>
-	            <Segment>
-	        		<Header as="h3">{this.state.currentGame.title}</Header>
-	        		<Header as="h4">{this.state.currentGame.description}</Header>
-	        		<Segment>This is where the Chat, Vote, and Intermission/End Components will live.</Segment>
-                <VoteContainer game={this.state.currentGame}></VoteContainer>
-                <RoundContainer game={this.state.currentGame}></RoundContainer>
+  render(){
 
-	            </Segment>
-            </div>
-            
-        )
-    }
+    console.log(`this.state in GameCurrent: `, this.state);
+              // <RoundContainer game={this.state.currentGame}></RoundContainer>
+
+    return(
+      <div>
+        <Header as="h1">Current Game</Header>
+        <Segment>
+
+          <Header as="h3">{this.props.currentGame.title}</Header>
+          <Header as="h4">{this.props.currentGame.description}</Header>
+          <VoteContainer 
+            currentGameState={this.props.currentGame}
+            votesLeft={this.props.votesLeft}
+            disabled={this.props.disabled}
+            vote={this.props.vote}
+            handleSubmitVote={this.props.handleSubmitVote}
+            handleChange={this.props.handleChange}
+            getGames={this.props.getGames}>
+          </VoteContainer>
+
+        </Segment>
+      </div>
+    )
+  }
 }
 export default GameCurrent;

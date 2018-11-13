@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Segment, Header, Grid } from 'semantic-ui-react';
-
+// import Repos from '../Repos';
 
 class GameCreateUserStory extends Component {
   constructor(){
@@ -9,15 +9,17 @@ class GameCreateUserStory extends Component {
     this.state = {
       title: '',
       description: '',
-      disabled: true
+      disabled: true,
     }
   }
   
 
   handleClick = () => this.setState({       // Button disable/enable
-    disabled: !this.state.disabled
+    disabled: !this.state.disabled,
+
   })
 
+  // ---------- Form Handling ---------- //
 
   updateUserStoryState = (e) => {
     this.setState({
@@ -35,9 +37,13 @@ class GameCreateUserStory extends Component {
         	<Header as="h2">User Story</Header>
           <Form onSubmit={this.props.updateUserStory.bind(null, this.state)}>
 
-            <Form.Input label='Title:' type='text' name='title' value={this.state.title} onChange={this.updateUserStoryState}/>
+            <Form.Input label='Title:' type='text' name='title' 
+              value={this.state.title} 
+              onChange={this.updateUserStoryState}/>
 
-            <Form.Input label='Description:' type='text' name='description' value={this.state.description} onChange={this.updateUserStoryState}/>
+            <Form.Input label='Description:' type='text' name='description' 
+              value={this.state.description} 
+              onChange={this.updateUserStoryState}/>
 
             <Grid columns={2} stackable textAlign='center'>
 
@@ -71,3 +77,4 @@ class GameCreateUserStory extends Component {
   }
 }
 export default GameCreateUserStory;
+          // <Repos user={this.props.user}/>
